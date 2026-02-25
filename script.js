@@ -453,3 +453,198 @@ document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
         trackEvent('CTA', 'click', btn.textContent.trim());
     });
 });
+
+// ========================================
+// Currency Toggle
+// ========================================
+function initCurrencyToggle() {
+    const currencyBtns = document.querySelectorAll('.currency-btn');
+    const priceElements = document.querySelectorAll('.price-amount[data-inr]');
+
+    currencyBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state
+            currencyBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update prices
+            const currency = btn.dataset.currency;
+            priceElements.forEach(el => {
+                el.textContent = el.dataset[currency];
+            });
+
+            trackEvent('Pricing', 'currency_change', currency);
+        });
+    });
+}
+
+// ========================================
+// Waitlist Form
+// ========================================
+function initWaitlistForm() {
+    const form = document.getElementById('waitlist-form');
+    const exitForm = document.getElementById('exit-popup-form');
+
+    const handleSubmit = (formElement, successElement) => {
+        formElement?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = formElement.querySelector('input[type="email"]').value;
+
+            // Simulate API call (replace with actual endpoint)
+            console.log('Waitlist signup:', email);
+
+            // Store in localStorage for demo
+            const waitlist = JSON.parse(localStorage.getItem('bugwizard_waitlist') || '[]');
+            if (!waitlist.includes(email)) {
+                waitlist.push(email);
+                localStorage.setItem('bugwizard_waitlist', JSON.stringify(waitlist));
+                updateWaitlistCount(waitlist.length);
+            }
+
+            // Show success message
+            if (successElement) {
+                successElement.style.display = 'flex';
+                formElement.querySelector('.form-group').style.display = 'none';
+                formElement.querySelector('.form-note')?.remove();
+            }
+
+            showNotification('You\'re on the waitlist! 🎉', 'success');
+            trackEvent('Waitlist', 'signup', email);
+
+            // Close exit popup if open
+            closeExitPopup();
+        });
+    };
+
+    handleSubmit(form, document.getElementById('waitlist-success'));
+    handleSubmit(exitForm, null);
+}
+
+function updateWaitlistCount(additionalCount = 0) {
+    const baseCount = 247;
+    const storedWaitlist = JSON.parse(localStorage.getItem('bugwizard_waitlist') || '[]');
+    const totalCount = baseCount + storedWaitlist.length;
+
+    document.querySelectorAll('#waitlist-count, #waitlist-count-large').forEach(el => {
+        if (el) el.textContent = totalCount;
+    });
+}
+
+// ========================================
+// Exit Intent Popup
+// ========================================
+let exitPopupShown = false;
+
+function initExitPopup() {
+    // Check if already shown in this session
+    if (sessionStorage.getItem('exitPopupShown')) return;
+
+    document.addEventListener('mouseleave', (e) => {
+        if (e.clientY < 10 && !exitPopupShown) {
+            showExitPopup();
+        }
+    });
+
+    // Mobile: show on scroll up near top
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', throttle(() => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY < 100 && lastScrollY > currentScrollY && !exitPopupShown) {
+            // User scrolling up near top - don't show popup on mobile, too aggressive
+        }
+        lastScrollY = currentScrollY;
+    }, 200));
+}
+
+function showExitPopup() {
+    const popup = document.getElementById('exit-popup');
+    if (popup && !exitPopupShown) {
+        popup.classList.add('active');
+        exitPopupShown = true;
+        sessionStorage.setItem('exitPopupShown', 'true');
+        trackEvent('ExitPopup', 'shown', '');
+    }
+}
+
+function closeExitPopup() {
+    const popup = document.getElementById('exit-popup');
+    if (popup) {
+        popup.classList.remove('active');
+    }
+}
+
+// Close popup on outside click
+document.addEventListener('click', (e) => {
+    const popup = document.getElementById('exit-popup');
+    if (popup && popup.classList.contains('active')) {
+        if (e.target === popup) {
+            closeExitPopup();
+        }
+    }
+});
+
+// Close popup on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeExitPopup();
+    }
+});
+
+// ========================================
+// Share Waitlist Function
+// ========================================
+function shareWaitlist() {
+    const shareData = {
+        title: 'BugWizard AI - AI-Driven Bug Creation & Retest Automation',
+        text: 'Check out BugWizard AI - it automates bug creation and retesting for Azure DevOps & JIRA. Join the waitlist!',
+        url: window.location.href + '#waitlist'
+    };
+
+    if (navigator.share) {
+        navigator.share(shareData)
+            .then(() => {
+                trackEvent('Share', 'native_share', 'waitlist');
+            })
+            .catch(console.error);
+    } else {
+        // Fallback: copy link to clipboard
+        copyToClipboard(shareData.url);
+        showNotification('Link copied! Share it with your QA friends 🚀', 'success');
+        trackEvent('Share', 'copy_link', 'waitlist');
+    }
+}
+
+// Make shareWaitlist available globally
+window.shareWaitlist = shareWaitlist;
+window.closeExitPopup = closeExitPopup;
+
+// ========================================
+// Initialize New Features
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    initCurrencyToggle();
+    initWaitlistForm();
+    initExitPopup();
+    updateWaitlistCount();
+    
+    // Add more elements to scroll animations
+    const additionalAnimElements = document.querySelectorAll(
+        '.testimonial-card, .faq-item, .demo-step, .founder-content'
+    );
+    additionalAnimElements.forEach(el => {
+        el.classList.add('animate-on-scroll');
+    });
+    
+    // Re-observe new elements
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+});
