@@ -479,21 +479,61 @@ function initCurrencyToggle() {
 }
 
 // ========================================
-// Waitlist Form
+// Waitlist Form — Saves to Google Sheets
 // ========================================
+
+// ⚠️ IMPORTANT: Replace this URL with your deployed Google Apps Script Web App URL
+const GOOGLE_SHEET_ENDPOINT = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+
+/**
+ * Sends waitlist email to Google Sheets via Apps Script Web App.
+ * Falls back gracefully — shows success to user even if sheet save fails.
+ */
+async function saveEmailToGoogleSheet(email, source = 'waitlist') {
+    try {
+        const response = await fetch(GOOGLE_SHEET_ENDPOINT, {
+            method: 'POST',
+            mode: 'no-cors', // Apps Script doesn't support CORS preflight
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                source: source,
+                timestamp: new Date().toISOString(),
+                page: window.location.href,
+                userAgent: navigator.userAgent
+            })
+        });
+        console.log('✅ Email saved to Google Sheet:', email);
+        return true;
+    } catch (error) {
+        console.warn('⚠️ Google Sheet save failed (email still stored locally):', error);
+        return false;
+    }
+}
+
 function initWaitlistForm() {
     const form = document.getElementById('waitlist-form');
     const exitForm = document.getElementById('exit-popup-form');
 
-    const handleSubmit = (formElement, successElement) => {
-        formElement?.addEventListener('submit', (e) => {
+    const handleSubmit = (formElement, successElement, source = 'waitlist') => {
+        formElement?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = formElement.querySelector('input[type="email"]').value;
+            const emailInput = formElement.querySelector('input[type="email"]');
+            const email = emailInput.value.trim();
+            if (!email) return;
 
-            // Simulate API call (replace with actual endpoint)
-            console.log('Waitlist signup:', email);
+            // Disable button to prevent double submit
+            const submitBtn = formElement.querySelector('button[type="submit"]');
+            const originalBtnHTML = submitBtn?.innerHTML;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="btn-icon">⏳</span> Saving...';
+            }
 
-            // Store in localStorage for demo
+            // 1. Save to Google Sheet
+            await saveEmailToGoogleSheet(email, source);
+
+            // 2. Also keep in localStorage as backup / for counter
             const waitlist = JSON.parse(localStorage.getItem('bugwizard_waitlist') || '[]');
             if (!waitlist.includes(email)) {
                 waitlist.push(email);
@@ -501,11 +541,17 @@ function initWaitlistForm() {
                 updateWaitlistCount(waitlist.length);
             }
 
-            // Show success message
+            // 3. Show success message
             if (successElement) {
                 successElement.classList.add('active');
                 formElement.querySelector('.form-group').style.display = 'none';
                 formElement.querySelector('.form-note')?.remove();
+            }
+
+            // Re-enable button (for exit popup which doesn't hide form)
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHTML;
             }
 
             showNotification('You\'re on the waitlist! 🎉', 'success');
@@ -516,8 +562,8 @@ function initWaitlistForm() {
         });
     };
 
-    handleSubmit(form, document.getElementById('waitlist-success'));
-    handleSubmit(exitForm, null);
+    handleSubmit(form, document.getElementById('waitlist-success'), 'main-waitlist');
+    handleSubmit(exitForm, null, 'exit-popup');
 }
 
 function updateWaitlistCount(additionalCount = 0) {
