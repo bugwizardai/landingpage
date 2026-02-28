@@ -1393,6 +1393,11 @@ ul {
     color: var(--text-primary);
 }
 
+.jira-logo-svg {
+    width: 48px;
+    height: 48px;
+}
+
 /* ========================================
    Security Section
    ======================================== */
@@ -1817,6 +1822,20 @@ ul {
 @media (max-width: 480px) {
     .hero-title {
         font-size: 2.5rem;
+    }
+    
+    .hero-stats {
+        gap: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .stat-value {
+        font-size: 1.8rem;
+    }
+    
+    .hero-tagline {
+        font-size: 0.85rem;
     }
     
     .providers-grid {
@@ -2850,7 +2869,7 @@ ul {
 }
 
 .waitlist-success {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 12px;
     padding: 16px 24px;
@@ -2858,6 +2877,10 @@ ul {
     border: 1px solid rgba(16, 185, 129, 0.3);
     border-radius: var(--radius-md);
     margin-top: 16px;
+}
+
+.waitlist-success.active {
+    display: flex;
 }
 
 .waitlist-success .success-icon {
@@ -3124,5 +3147,584 @@ ul {
 
     .exit-popup-content {
         padding: 32px 24px;
+    }
+}
+
+/* ============================================
+   OZZY DEVICE FARM — HERO SECTION
+   ============================================ */
+.device-farm-hero-section {
+    padding: 80px 0 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.device-farm-hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(168, 85, 247, 0.08) 50%, rgba(59, 130, 246, 0.08) 100%);
+    z-index: 0;
+}
+
+.device-farm-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.device-farm-hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.device-farm-new-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ff6b35, #ff4500);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    width: fit-content;
+    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4); }
+    50% { box-shadow: 0 4px 30px rgba(255, 107, 53, 0.6); }
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulseDot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+.device-farm-emoji {
+    font-size: 1em;
+}
+
+.device-farm-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #ff6b35, #ff4500, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.device-farm-hero-tagline {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.device-farm-hero-description {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 540px;
+}
+
+.device-farm-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 12px 0;
+}
+
+.df-stat {
+    text-align: center;
+    padding: 16px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 107, 53, 0.15);
+    transition: all var(--transition-normal);
+}
+
+.df-stat:hover {
+    border-color: rgba(255, 107, 53, 0.4);
+    background: rgba(255, 107, 53, 0.06);
+    transform: translateY(-2px);
+}
+
+.df-stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ff6b35;
+    line-height: 1.2;
+}
+
+.df-stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.device-farm-cta-btn {
+    width: fit-content;
+    margin-top: 8px;
+}
+
+/* Device Farm Preview Mockup */
+.device-farm-hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.device-farm-preview {
+    width: 100%;
+    max-width: 520px;
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 107, 53, 0.1);
+    transition: all var(--transition-normal);
+}
+
+.device-farm-preview:hover {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 107, 53, 0.15);
+    transform: translateY(-4px);
+}
+
+.df-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.df-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.df-title-bar {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.df-preview-body {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    grid-template-rows: auto auto;
+    min-height: 320px;
+}
+
+.df-sidebar {
+    grid-row: 1 / 3;
+    padding: 12px 8px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.df-device-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.df-device-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.df-device-item.active {
+    background: rgba(255, 107, 53, 0.15);
+    color: #ff6b35;
+    font-weight: 600;
+}
+
+.df-viewport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.df-phone-frame {
+    width: 140px;
+    height: 260px;
+    border-radius: 24px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    position: relative;
+    background: #1a1a2e;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.df-phone-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.df-phone-status {
+    height: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.df-app-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.df-app-bar {
+    height: 32px;
+    margin: 8px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(255, 107, 53, 0.3), rgba(168, 85, 247, 0.3));
+}
+
+.df-app-body {
+    flex: 1;
+    padding: 0 8px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.df-app-row {
+    height: 14px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.df-app-row.short {
+    width: 60%;
+}
+
+.df-controls {
+    grid-column: 2;
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.15);
+    flex-wrap: wrap;
+}
+
+.df-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: default;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.df-btn:hover {
+    background: rgba(255, 107, 53, 0.1);
+    border-color: rgba(255, 107, 53, 0.3);
+    color: #ff6b35;
+}
+
+/* ============================================
+   DEVICE FARM FEATURES GRID
+   ============================================ */
+.device-farm-features-section {
+    padding: 60px 0 80px;
+}
+
+.device-farm-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.df-feature-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.df-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #ff4500);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.df-feature-card:hover {
+    border-color: rgba(255, 107, 53, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 107, 53, 0.08);
+}
+
+.df-feature-card:hover::before {
+    opacity: 1;
+}
+
+.df-feature-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 14px;
+}
+
+.df-feature-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.df-feature-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Device Farm Bottom CTA */
+.device-farm-bottom-cta {
+    text-align: center;
+    margin-top: 48px;
+    padding: 36px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), rgba(255, 69, 0, 0.05));
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 107, 53, 0.15);
+}
+
+.df-cta-text {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.df-cta-text strong {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   DEVICE FARM CARD IN FEATURES GRID
+   ============================================ */
+.feature-card.device-farm-card {
+    border-color: rgba(255, 107, 53, 0.25);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.06) 0%, var(--bg-card) 100%);
+    position: relative;
+}
+
+.feature-card.device-farm-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), transparent, rgba(255, 69, 0, 0.2));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.feature-card.device-farm-card:hover::after {
+    opacity: 1;
+}
+
+.device-farm-badge {
+    background: linear-gradient(135deg, #ff6b35, #ff4500) !important;
+    color: #fff !important;
+    animation: badgeGlow 3s ease-in-out infinite;
+}
+
+@keyframes badgeGlow {
+    0%, 100% { box-shadow: 0 2px 12px rgba(255, 107, 53, 0.3); }
+    50% { box-shadow: 0 2px 20px rgba(255, 107, 53, 0.5); }
+}
+
+.ai-badge-small {
+    background: linear-gradient(135deg, #a855f7, #7c3aed) !important;
+    color: #fff !important;
+}
+
+/* ============================================
+   DEVICE FARM RESPONSIVE STYLES
+   ============================================ */
+@media (max-width: 1024px) {
+    .device-farm-hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    
+    .device-farm-hero-content {
+        align-items: center;
+    }
+    
+    .device-farm-hero-description {
+        max-width: 100%;
+    }
+    
+    .device-farm-hero-title {
+        font-size: 2.4rem;
+    }
+    
+    .device-farm-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .device-farm-preview {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .device-farm-hero-section {
+        padding: 60px 0 30px;
+    }
+    
+    .device-farm-hero-title {
+        font-size: 2rem;
+    }
+    
+    .device-farm-hero-tagline {
+        font-size: 1.1rem;
+    }
+    
+    .device-farm-hero-description {
+        font-size: 0.95rem;
+    }
+    
+    .device-farm-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .device-farm-features-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .df-preview-body {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+    
+    .df-sidebar {
+        grid-row: auto;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        overflow-x: auto;
+        padding: 8px;
+    }
+    
+    .df-device-item {
+        white-space: nowrap;
+    }
+    
+    .df-viewport {
+        padding: 16px;
+    }
+    
+    .df-phone-frame {
+        width: 120px;
+        height: 220px;
+    }
+    
+    .df-controls {
+        grid-column: 1;
+        justify-content: center;
+    }
+    
+    .device-farm-bottom-cta {
+        padding: 24px;
+    }
+    
+    .df-cta-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .device-farm-hero-title {
+        font-size: 1.6rem;
+    }
+    
+    .device-farm-hero-tagline {
+        font-size: 1rem;
+    }
+    
+    .device-farm-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .df-stat {
+        padding: 12px 6px;
+    }
+    
+    .df-stat-value {
+        font-size: 1.4rem;
+    }
+    
+    .df-stat-label {
+        font-size: 0.65rem;
+    }
+    
+    .df-feature-card {
+        padding: 20px 16px;
+    }
+    
+    .df-btn {
+        font-size: 0.65rem;
+        padding: 5px 8px;
+    }
+    
+    .device-farm-preview {
+        max-width: 100%;
+    }
+    
+    .df-title-bar {
+        display: none;
     }
 }

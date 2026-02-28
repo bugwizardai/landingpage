@@ -183,7 +183,7 @@ function init3DScene() {
 function initScrollAnimations() {
     // Add animate-on-scroll class to elements
     const animatedElements = document.querySelectorAll(
-        '.problem-card, .step, .feature-card, .role-card, .security-card, .comparison-card'
+        '.problem-card, .step, .feature-card, .role-card, .security-card, .comparison-card, .df-feature-card, .device-farm-hero'
     );
 
     animatedElements.forEach(el => {
@@ -213,7 +213,7 @@ function initScrollAnimations() {
 
     // Staggered animations for grids
     const grids = document.querySelectorAll(
-        '.problem-grid, .features-grid, .roles-grid, .security-grid, .providers-grid'
+        '.problem-grid, .features-grid, .roles-grid, .security-grid, .providers-grid, .device-farm-features-grid, .device-farm-stats'
     );
 
     grids.forEach(grid => {
@@ -503,7 +503,7 @@ function initWaitlistForm() {
 
             // Show success message
             if (successElement) {
-                successElement.style.display = 'flex';
+                successElement.classList.add('active');
                 formElement.querySelector('.form-group').style.display = 'none';
                 formElement.querySelector('.form-note')?.remove();
             }
@@ -629,7 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add more elements to scroll animations
     const additionalAnimElements = document.querySelectorAll(
-        '.testimonial-card, .faq-item, .demo-step, .founder-content'
+        '.testimonial-card, .faq-item, .demo-step, .founder-content, .device-farm-bottom-cta, .device-farm-preview'
     );
     additionalAnimElements.forEach(el => {
         el.classList.add('animate-on-scroll');
