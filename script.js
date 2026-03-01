@@ -568,11 +568,9 @@ function initWaitlistForm() {
 
 function updateWaitlistCount(additionalCount = 0) {
     const baseCount = 247;
-    const storedWaitlist = JSON.parse(localStorage.getItem('bugwizard_waitlist') || '[]');
-    const totalCount = baseCount + storedWaitlist.length;
 
     document.querySelectorAll('#waitlist-count, #waitlist-count-large').forEach(el => {
-        if (el) el.textContent = totalCount;
+        if (el) el.textContent = baseCount;
     });
 }
 

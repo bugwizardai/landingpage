@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -142,7 +142,33 @@
                 <span class="counter-icon">🚀</span>
                 <span class="counter-text">Join <strong id="waitlist-count">247</strong>+ QA engineers on the waitlist</span>
             </div>
-            
+
+            <!-- Launch Countdown Timer -->
+            <div class="launch-countdown" id="launch-countdown">
+                <p class="launch-countdown-label">🚀 Launching In</p>
+                <div class="launch-countdown-timer">
+                    <div class="launch-countdown-item">
+                        <span class="launch-countdown-value" id="lc-days">00</span>
+                        <span class="launch-countdown-unit">Days</span>
+                    </div>
+                    <div class="launch-countdown-sep">:</div>
+                    <div class="launch-countdown-item">
+                        <span class="launch-countdown-value" id="lc-hours">00</span>
+                        <span class="launch-countdown-unit">Hours</span>
+                    </div>
+                    <div class="launch-countdown-sep">:</div>
+                    <div class="launch-countdown-item">
+                        <span class="launch-countdown-value" id="lc-minutes">00</span>
+                        <span class="launch-countdown-unit">Min</span>
+                    </div>
+                    <div class="launch-countdown-sep">:</div>
+                    <div class="launch-countdown-item">
+                        <span class="launch-countdown-value" id="lc-seconds">00</span>
+                        <span class="launch-countdown-unit">Sec</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="hero-cta">
                 <a href="#waitlist" class="btn btn-primary btn-lg">
                     <span class="btn-icon">🪄</span>
@@ -1891,6 +1917,258 @@
         </div>
     </div>
 
+    <!-- Launch Countdown Timer Styles -->
+    <style>
+        .launch-countdown {
+            margin: 24px 0 28px;
+            text-align: center;
+        }
+        .launch-countdown-label {
+            font-size: 0.95rem;
+            color: #818cf8;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .launch-countdown-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 14px 28px;
+            backdrop-filter: blur(10px);
+        }
+        .launch-countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 52px;
+        }
+        .launch-countdown-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        .launch-countdown-unit {
+            font-size: 0.65rem;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+        .launch-countdown-sep {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: rgba(99, 102, 241, 0.4);
+            margin-top: -10px;
+        }
+        @media (max-width: 480px) {
+            .launch-countdown-timer {
+                padding: 10px 18px;
+                gap: 6px;
+            }
+            .launch-countdown-value {
+                font-size: 1.25rem;
+            }
+            .launch-countdown-item {
+                min-width: 40px;
+            }
+        }
+    </style>
+    <!-- Overlay removed — just keeping the timer -->
+
     <script src="script.js"></script>
+    <script>
+        // Launch Countdown Timer — March 20, 2026
+        (function() {
+            const lcLaunchDate = new Date('2026-03-20T00:00:00');
+            function lcUpdate() {
+                const now = new Date();
+                const diff = lcLaunchDate - now;
+                if (diff <= 0) {
+                    document.getElementById('lc-days').textContent = '00';
+                    document.getElementById('lc-hours').textContent = '00';
+                    document.getElementById('lc-minutes').textContent = '00';
+                    document.getElementById('lc-seconds').textContent = '00';
+                    return;
+                }
+                const d = Math.floor(diff / (1000*60*60*24));
+                const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+                const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+                const s = Math.floor((diff % (1000*60)) / 1000);
+                document.getElementById('lc-days').textContent = String(d).padStart(2, '0');
+                document.getElementById('lc-hours').textContent = String(h).padStart(2, '0');
+                document.getElementById('lc-minutes').textContent = String(m).padStart(2, '0');
+                document.getElementById('lc-seconds').textContent = String(s).padStart(2, '0');
+            }
+            lcUpdate();
+            setInterval(lcUpdate, 1000);
+        })();
+    </script>
+
+    <!-- ============================================
+         SOCIAL PROOF NOTIFIER
+         ============================================ -->
+    <div class="sp-notifier" id="sp-notifier">
+        <div class="sp-notifier-inner">
+            <div class="sp-notifier-close" id="sp-notifier-close">&times;</div>
+            <div class="sp-notifier-icon">🎉</div>
+            <div class="sp-notifier-text">
+                <span class="sp-notifier-msg" id="sp-notifier-msg">Someone from <strong>India</strong> just joined the waitlist</span>
+                <span class="sp-notifier-time" id="sp-notifier-time">2 minutes ago</span>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .sp-notifier {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 99998;
+            opacity: 0;
+            transform: translateX(-120%);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            pointer-events: none;
+        }
+        .sp-notifier.sp-show {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        .sp-notifier-inner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(15, 15, 35, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 14px;
+            padding: 14px 18px;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            max-width: 340px;
+        }
+        .sp-notifier-close {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .sp-notifier-close:hover {
+            color: #fff;
+        }
+        .sp-notifier-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        .sp-notifier-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .sp-notifier-msg {
+            color: #e0e0ff;
+            font-size: 13.5px;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        .sp-notifier-msg strong {
+            color: #818cf8;
+        }
+        .sp-notifier-time {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 11.5px;
+        }
+
+        @media (max-width: 480px) {
+            .sp-notifier {
+                bottom: 16px;
+                left: 12px;
+                right: 12px;
+            }
+            .sp-notifier-inner {
+                max-width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        // Social Proof Notifier
+        (function() {
+            const countries = [
+                '🇮🇳 India', '🇺🇸 United States', '🇬🇧 United Kingdom', '🇩🇪 Germany',
+                '🇨🇦 Canada', '🇦🇺 Australia', '🇫🇷 France', '🇧🇷 Brazil',
+                '🇯🇵 Japan', '🇳🇱 Netherlands', '🇸🇬 Singapore', '🇦🇪 UAE',
+                '🇰🇷 South Korea', '🇮🇱 Israel', '🇸🇪 Sweden', '🇪🇸 Spain',
+                '🇵🇱 Poland', '🇮🇩 Indonesia', '🇳🇬 Nigeria', '🇿🇦 South Africa',
+                '🇲🇽 Mexico', '🇮🇹 Italy', '🇵🇭 Philippines', '🇻🇳 Vietnam',
+                '🇹🇷 Turkey', '🇹🇭 Thailand', '🇵🇰 Pakistan', '🇧🇩 Bangladesh',
+                '🇨🇴 Colombia', '🇦🇷 Argentina'
+            ];
+
+            const timeLabels = [
+                'Just now', '1 minute ago', '2 minutes ago', '3 minutes ago',
+                '5 minutes ago', '8 minutes ago', '12 minutes ago'
+            ];
+
+            const notifier = document.getElementById('sp-notifier');
+            const msgEl = document.getElementById('sp-notifier-msg');
+            const timeEl = document.getElementById('sp-notifier-time');
+            const closeBtn = document.getElementById('sp-notifier-close');
+            let hideTimeout, nextTimeout;
+            let usedIndices = [];
+
+            function getRandomCountry() {
+                if (usedIndices.length >= countries.length) usedIndices = [];
+                let idx;
+                do { idx = Math.floor(Math.random() * countries.length); }
+                while (usedIndices.includes(idx));
+                usedIndices.push(idx);
+                return countries[idx];
+            }
+
+            function showNotification() {
+                const country = getRandomCountry();
+                const time = timeLabels[Math.floor(Math.random() * timeLabels.length)];
+                msgEl.innerHTML = 'Someone from <strong>' + country + '</strong> just joined the waitlist';
+                timeEl.textContent = time;
+                notifier.classList.add('sp-show');
+
+                hideTimeout = setTimeout(() => {
+                    notifier.classList.remove('sp-show');
+                }, 6000); // visible for 6 seconds
+
+                scheduleNext();
+            }
+
+            function scheduleNext() {
+                // Random interval between 3–5 minutes (180000–300000 ms)
+                const delay = 180000 + Math.floor(Math.random() * 120000);
+                nextTimeout = setTimeout(showNotification, delay);
+            }
+
+            closeBtn.addEventListener('click', () => {
+                clearTimeout(hideTimeout);
+                notifier.classList.remove('sp-show');
+            });
+
+            // First notification after 8-15 seconds
+            setTimeout(showNotification, 8000 + Math.floor(Math.random() * 7000));
+        })();
+    </script>
 </body>
 </html>
