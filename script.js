@@ -483,7 +483,7 @@ function initCurrencyToggle() {
 // ========================================
 
 // ⚠️ IMPORTANT: Replace this URL with your deployed Google Apps Script Web App URL
-const GOOGLE_SHEET_ENDPOINT = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzwx5h9fkVDZeB8aGUELW-WfquYqiEHennLYit71xetVNrClqTkGG69VVUi2OQYr0c3/exec';
 
 /**
  * Sends waitlist email to Google Sheets via Apps Script Web App.
