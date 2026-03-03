@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/"
-  to = "/landingpage"
-  status = 301
-  force = true
