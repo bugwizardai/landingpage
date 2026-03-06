@@ -2015,7 +2015,7 @@
     <script>
         // Launch Countdown Timer — March 20, 2026
         (function() {
-            const lcLaunchDate = new Date('2026-03-20T00:00:00');
+            const lcLaunchDate = new Date('2026-03-22T00:00:00');
             function lcUpdate() {
                 const now = new Date();
                 const diff = lcLaunchDate - now;
@@ -2139,7 +2139,7 @@
                 '🇮🇳 India', '🇺🇸 United States', '🇬🇧 United Kingdom', '🇩🇪 Germany',
                 '🇨🇦 Canada', '🇦🇺 Australia', '🇫🇷 France', '🇧🇷 Brazil',
                 '🇯🇵 Japan', '🇳🇱 Netherlands', '🇸🇬 Singapore', '🇦🇪 UAE',
-                '🇰🇷 South Korea', '🇮🇱 Israel', '🇸🇪 Sweden', '🇪🇸 Spain',
+                '🇰🇷 South Korea', '🇪 Sweden', '🇪🇸 Spain',
                 '🇵🇱 Poland', '🇮🇩 Indonesia', '🇳🇬 Nigeria', '🇿🇦 South Africa',
                 '🇲🇽 Mexico', '🇮🇹 Italy', '🇵🇭 Philippines', '🇻🇳 Vietnam',
                 '🇹🇷 Turkey', '🇹🇭 Thailand', '🇵🇰 Pakistan', '🇧🇩 Bangladesh',
@@ -2173,6 +2173,13 @@
                 msgEl.innerHTML = 'Someone from <strong>' + country + '</strong> just joined the waitlist';
                 timeEl.textContent = time;
                 notifier.classList.add('sp-show');
+
+                // Increment waitlist counter
+                const counterEl = document.getElementById('waitlist-count');
+                if (counterEl) {
+                    const current = parseInt(counterEl.textContent, 10) || 247;
+                    counterEl.textContent = current + 1;
+                }
 
                 hideTimeout = setTimeout(() => {
                     notifier.classList.remove('sp-show');
