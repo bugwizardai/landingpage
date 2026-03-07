@@ -459,7 +459,7 @@ document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
 // ========================================
 function initCurrencyToggle() {
     const currencyBtns = document.querySelectorAll('.currency-btn');
-    const priceElements = document.querySelectorAll('.price-amount[data-inr]');
+    const priceElements = document.querySelectorAll('.price-amount[data-inr], .free-trial-price[data-inr]');
 
     currencyBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -567,7 +567,7 @@ function initWaitlistForm() {
 }
 
 function updateWaitlistCount(additionalCount = 0) {
-    const baseCount = 247;
+    const baseCount = 11850;
 
     document.querySelectorAll('#waitlist-count, #waitlist-count-large').forEach(el => {
         if (el) el.textContent = baseCount;
