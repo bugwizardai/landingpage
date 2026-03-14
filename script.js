@@ -567,7 +567,7 @@ function initWaitlistForm() {
 }
 
 function updateWaitlistCount(additionalCount = 0) {
-    const baseCount = 11850;
+    const baseCount = 17354;
 
     document.querySelectorAll('#waitlist-count, #waitlist-count-large').forEach(el => {
         if (el) el.textContent = baseCount;

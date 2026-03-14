@@ -75,6 +75,7 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+    overflow-x: hidden;
 }
 
 body {
@@ -1875,63 +1876,63 @@ ul {
     :root {
         --section-padding: 60px;
     }
-    
+
     .hero {
         padding: 100px 0 60px;
     }
-    
+
     .hero-cta {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .hero-cta .btn {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .hero-stats {
         gap: 30px;
     }
-    
+
     .steps-container {
         flex-direction: column;
     }
-    
+
     .step-connector {
         width: 2px;
         height: 40px;
     }
-    
+
     .features-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .comparison-container {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .comparison-arrow {
         transform: rotate(90deg);
     }
-    
+
     .comparison-card {
         max-width: 100%;
     }
-    
+
     .providers-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .pricing-card.featured {
         transform: scale(1);
     }
-    
+
     .pricing-card.featured:hover {
         transform: translateY(-8px);
     }
-    
+
     .pricing-grid {
         grid-template-columns: repeat(2, 1fr);
         max-width: 700px;
@@ -1947,46 +1948,46 @@ ul {
         grid-template-columns: 1fr;
         max-width: 400px;
     }
-    
+
     .hero-stats {
         gap: 20px;
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .stat-value {
         font-size: 1.8rem;
     }
-    
+
     .hero-tagline {
         font-size: 0.85rem;
     }
-    
+
     .providers-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .problem-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .roles-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .security-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .integration-visual {
         flex-direction: column;
         gap: 16px;
     }
-    
+
     .integration-ampersand {
         font-size: 2rem;
     }
-    
+
     .ado-logo {
         padding: 32px;
     }
