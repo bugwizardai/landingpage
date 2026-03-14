@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugWizard User Manual - Version 1.0</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --accent-color: #a855f7;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --border-color: #e2e8f0;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: A4;
+            margin: 20mm 15mm;
+        }
+        
+        @media print {
+            body {
+                font-size: 10pt;
+            }
+            
+            .cover-page, .toc-page, section {
+                page-break-after: always;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            table, pre, .note-box, .warning-box, .tip-box {
+                page-break-inside: avoid;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: #fff;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: -20px -20px 40px -20px;
+            padding: 60px 40px;
+            border-radius: 0 0 30px 30px;
+        }
+        
+        .cover-logo {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .cover-title {
+            font-size: 48px;
+            color:white;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .cover-subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .cover-version {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cover-meta {
+            margin-top: 60px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .cover-meta p {
+            margin: 8px 0;
+        }
+        
+        /* Table of Contents */
+        .toc-page {
+            margin-bottom: 40px;
+        }
+        
+        .toc-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .toc-list {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+        
+        .toc-list li {
+            counter-increment: toc-counter;
+            padding: 12px 0;
+            border-bottom: 1px dotted var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .toc-list li::before {
+            content: counter(toc-counter) ".";
+            font-weight: 600;
+            color: var(--primary-color);
+            width: 30px;
+            flex-shrink: 0;
+        }
+        
+        .toc-list a {
+            color: var(--text-dark);
+            text-decoration: none;
+            flex: 1;
+        }
+        
+        .toc-list a:hover {
+            color: var(--primary-color);
+        }
+        
+        .toc-page-num {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        /* Sections */
+        section {
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        h1 .section-icon {
+            font-size: 36px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 30px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin: 25px 0 12px 0;
+        }
+        
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 20px 0 10px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        li::marker {
+            color: var(--primary-color);
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        tbody tr:hover {
+            background-color: var(--bg-light);
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background: var(--bg-light);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--primary-dark);
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        /* Note boxes */
+        .note-box, .tip-box, .warning-box, .info-box {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .note-box {
+            background: #f0f9ff;
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .tip-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .info-box {
+            background: #faf5ff;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .box-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .box-content {
+            flex: 1;
+        }
+        
+        .box-content strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        /* Feature cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .feature-card .icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+        }
+        
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin: 0;
+        }
+        
+        /* Steps */
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .step-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Keyboard shortcuts */
+        kbd {
+            display: inline-block;
+            padding: 4px 8px;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            box-shadow: 0 2px 0 #94a3b8;
+            margin: 0 2px;
+        }
+        
+        /* Footer */
+        .manual-footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border-color);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+        
+        .manual-footer .logo {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        /* Print button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+        }
+        
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Divider */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 30px 0;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 5px;
+        }
+        
+        .badge-purple {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+        
+        .badge-green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .badge-blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .badge-orange {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+        
+        .badge-pink {
+            background: #fce7f3;
+            color: #db2777;
+        }
+        
+        .badge-gold {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .badge-red {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .badge-cyan {
+            background: #cffafe;
+            color: #0891b2;
+        }
+        
+        .badge-lime {
+            background: #ecfccb;
+            color: #65a30d;
+        }
+        
+        .badge-violet {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+        
+        .badge-teal {
+            background: #ccfbf1;
+            color: #0d9488;
+        }
+        
+        .badge-coral {
+            background: #ffe4e6;
+            color: #f43f5e;
+        }
+        
+        .badge-indigo {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+        
+        .badge-amber {
+            background: #fef08a;
+            color: #b45309;
+        }
+        
+        .badge-mint {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        .badge-rainbow {
+            background: linear-gradient(90deg, #fee2e2, #fef3c7, #ecfccb, #cffafe, #e0e7ff, #fce7f3);
+            color: #6b21a8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Button -->
+    <button class="print-btn no-print" onclick="window.print()">📄 Save as PDF</button>
+    
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="cover-logo">🪄</div>
+        <h1 class="cover-title">BugWizard</h1>
+        <p class="cover-subtitle">AI Bug Report Automator for Azure DevOps & JIRA</p>
+        <div class="cover-version">📘 User Manual v1.0</div>
+        <p style="font-size: 18px; max-width: 500px; opacity: 0.9;">
+            Your complete guide to mastering bug reporting in Azure DevOps & JIRA with artificial intelligence
+        </p>
+        <div class="cover-meta">
+            <p><strong>Version:</strong> 1.0 "Whisker Wizard" 😻</p>
+            <p><strong>Last Updated:</strong> February 2026</p>
+            <p><strong>Developed by:</strong> Abdul Talib</p>
+        </div>
+    </div>
+    
+    <!-- Table of Contents -->
+    <div class="toc-page">
+        <h2 class="toc-title">📑 Table of Contents</h2>
+        <ol class="toc-list">
+            <li><a href="#overview">Overview & Key Features</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#initial-setup">Initial Setup</a></li>
+            <li><a href="#operating-modes">Operating Modes</a></li>
+            <li><a href="#bug-creator">Bug Creator Mode</a></li>
+            <li><a href="#retester-mode">Retester Mode</a></li>
+            <li><a href="#duplicate-detector">Duplicate Bug Detector</a></li>
+            <li><a href="#video-compressor">Video Compressor & Evidence</a></li>
+            <li><a href="#activity-stats">Activity Statistics & Charts</a></li>
+            <li><a href="#user-profile">User Profile & Personalization</a></li>
+            <li><a href="#settings">Settings Configuration</a></li>
+            <li><a href="#platform-selection">Platform Selection & JIRA Integration</a></li>
+            <li><a href="#voice-to-text">Voice-to-Text Input</a></li>
+            <li><a href="#launchpad">Launchpad</a></li>
+            <li><a href="#dock-features">Dock Features</a></li>
+            <li><a href="#more-tools">More Tools</a></li>
+            <li><a href="#ai-assistant">Ozzy AI</a></li>
+            <li><a href="#train-ai">Train AI for Your Project</a></li>
+            <li><a href="#terminal">Built-in Terminal</a></li>
+            <li><a href="#test-optimizer">Test Case Optimizer</a></li>
+            <li><a href="#testcase-generator">Test Case Generator (Coming Soon)</a></li>
+            <li><a href="#agentron-store">Agentron Store (Coming Soon)</a></li>
+            <li><a href="#api-tester">API Flow Tester</a></li>
+            <li><a href="#history">History Feature</a></li>
+            <li><a href="#themes">Dark Mode & Custom Themes</a></li>
+            <li><a href="#shortcuts">Keyboard Shortcuts & Tips</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ol>
+    </div>
+    
+    <!-- Section 1: Overview -->
+    <section id="overview">
+        <h1><span class="section-icon">📋</span> Overview</h1>
+        
+        <p><strong>BugWizard</strong> is a sophisticated AI-powered web application designed to revolutionize bug reporting and retest workflows in <strong>Azure DevOps (ADO)</strong> and <strong>Atlassian JIRA</strong>. Operating in two powerful modes—<em>Developer's Nightmare Mode</em> (Bug Creator) and <em>Developer's Chill Mode</em> (Retester)—it automates the entire process from parsing markdown-formatted bug reports to creating work items and submitting retest comments via Azure DevOps REST API or JIRA REST API.</p>
+        
+        <h2>Key Features</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">🤖</div>
+                <h4>Multi-AI Provider Support</h4>
+                <p>Integrate with Groq, OpenRouter, Gemini, OpenAI, Claude, Grok, Azure OpenAI, DeepSeek, Qwen, and GLM</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🌐</div>
+                <h4>Multi-Platform Support</h4>
+                <p>Seamlessly switch between Azure DevOps and Atlassian JIRA with a single click</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🧠</div>
+                <h4>Train AI for Your Project</h4>
+                <p>Upload .md or .json training data files to customize AI responses with project-specific context</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🐛</div>
+                <h4>Automated Bug Creation</h4>
+                <p>Parse markdown-formatted bug reports and create work items in Azure DevOps or JIRA</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔄</div>
+                <h4>Retest Report Submission</h4>
+                <p>Add retest comments with automatic status updates via API</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔍</div>
+                <h4>Duplicate Detection</h4>
+                <p>Intelligent search for similar existing bugs before creation</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎤</div>
+                <h4>Voice-to-Text Input</h4>
+                <p>Dictate bug descriptions using speech recognition</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🚀</div>
+                <h4>Launchpad</h4>
+                <p>macOS-style app launcher for quick access to all tools</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h4>Activity Statistics</h4>
+                <p>Visual charts to track bugs created and retested over time</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎬</div>
+                <h4>Video Evidence Support</h4>
+                <p>Built-in video compressor for attaching evidence</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">💻</div>
+                <h4>Built-in Terminal</h4>
+                <p>Command-line interface with 25+ commands</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🧪</div>
+                <h4>Test Case Optimizer</h4>
+                <p>AI-powered test case analysis and optimization</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📝</div>
+                <h4>Test Case Generator</h4>
+                <p>AI-powered test case generation from requirements (Coming Soon)</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🤖</div>
+                <h4>Agentron Store</h4>
+                <p>Browse and install QA automation agents (Coming Soon)</p>
+            </div>
+        </div>
+        
+        <h3>Additional Features</h3>
+        <ul>
+            <li>📋 <strong>Starter Template</strong> – Quick access to bug report and retest templates</li>
+            <li>📱 <strong>Custom Apps Support</strong> – Add your own applications with custom market configurations</li>
+            <li>✨ <strong>Extend Default Apps</strong> – Add additional markets to your default applications</li>
+            <li>📜 <strong>History Tracking</strong> – View and reload previously parsed bug reports (up to 50 entries)</li>
+            <li>👤 <strong>User Personalization</strong> – Onboarding flow with personalized greetings</li>
+            <li>🔐 <strong>Secure Access Control</strong> – SHA-256 password-protected access with Web Crypto API</li>
+            <li>🌙 <strong>Dark Mode & Custom Themes</strong> – Toggle themes and choose from 16 color schemes</li>
+            <li>🎨 <strong>macOS-Style Interface</strong> – Professional dock navigation and glassmorphism design</li>
+            <li>⏰ <strong>Analog Clock Widget</strong> – Real-time clock display with date</li>
+            <li>🧪 <strong>API Flow Tester</strong> – Full-featured web-based API testing tool with latency testing</li>
+            <li>📄 <strong>PDF & Excel Export</strong> – Export bug reports and test case analysis</li>
+            <li>📱 <strong>PWA Support</strong> – Install as a Progressive Web App</li>
+            <li>🎭 <strong>Lottie Animations</strong> – Beautiful animated icons and transitions throughout the app</li>
+        </ul>
+    </section>
+    
+    <!-- Section 2: Getting Started -->
+    <section id="getting-started">
+        <h1><span class="section-icon">🚀</span> Getting Started</h1>
+        
+        <h2>System Requirements</h2>
+        <ul>
+            <li>Modern web browser (Chrome, Edge, Firefox, or Safari recommended)</li>
+            <li>Internet connection for Azure DevOps or JIRA API access</li>
+            <li>Azure DevOps Personal Access Token (PAT) OR JIRA API Token with appropriate permissions</li>
+        </ul>
+        
+        <h2>Accessing BugWizard</h2>
+        <ol class="step-list">
+            <li>Open the <code>index.html</code> file in your web browser</li>
+            <li>Accept or reject cookies in the <strong>Cookie Consent Banner</strong> (appears after 1.5 seconds)</li>
+            <li>The <strong>splash screen</strong> appears showing a loading progress bar with personalized greeting</li>
+            <li><strong>First-time users:</strong> Enter the 8-character access code provided by the developer</li>
+            <li>Complete the <strong>onboarding flow</strong> to set up your profile (optional but recommended)</li>
+            <li><strong>First-time setup:</strong> Install dependencies via Terminal (press <kbd>Alt</kbd>+<kbd>T</kbd> and run <code>heyo install bugwizard dependencies</code>)</li>
+        </ol>
+        
+        <h2>Access Code Protection</h2>
+        <p>BugWizard requires an 8-character access code to unlock the application. There are two types of codes:</p>
+        
+        <h3>License Code (permanent access)</h3>
+        <ul>
+            <li>Format: <code>PLBW</code> + 4 alphanumeric characters (e.g., <code>PLBWA7K9</code>)</li>
+            <li>Provides unlimited permanent access</li>
+            <li>No expiration or countdown</li>
+            <li>Enter in the main Access Code field</li>
+        </ul>
+        
+        <h3>Trial Code (3-day access)</h3>
+        <ul>
+            <li>Format: <code>TLBW</code> + 4 alphanumeric characters (e.g., <code>TLBWA7K9</code>)</li>
+            <li>Provides full access for 3 days from activation</li>
+            <li>Trial codes are valid for 3 days from generation date</li>
+            <li>Access via the <strong>"🎟️ Try 3-Day Trial"</strong> button on the Access modal</li>
+        </ul>
+        
+        <h3>To Unlock with License Code</h3>
+        <ol>
+            <li>Enter the 8-character license code (starts with PLBW)</li>
+            <li>Toggle password visibility using the 👁️ button</li>
+            <li>Click <strong>"🚀 Unlock BugWizard"</strong></li>
+            <li>Once authenticated, access is remembered for future sessions</li>
+        </ol>
+        
+        <h3>To Activate Trial</h3>
+        <ol>
+            <li>Click <strong>"🎟️ Try 3-Day Trial"</strong> button on the Access modal</li>
+            <li>Enter the 8-character trial code (starts with TLBW)</li>
+            <li>Click <strong>"🚀 Activate Trial"</strong></li>
+            <li>Trial period begins immediately upon activation</li>
+        </ol>
+        
+        <h3>Trial Mode Features</h3>
+        <p>When in trial mode, a banner appears at the top showing:</p>
+        <ul>
+            <li><strong>Trial Mode indicator</strong> with 🎟️ icon</li>
+            <li><strong>Days remaining</strong> (e.g., "3 days remaining")</li>
+            <li><strong>Countdown timer</strong> in DD:HH:MM:SS format</li>
+            <li><strong>"🚀 Upgrade" button</strong> to get full access</li>
+        </ul>
+        <p>A floating <strong>👑 Upgrade</strong> widget also appears for quick access to upgrade options.</p>
+        
+        <h3>Requesting Access Codes</h3>
+        <p>Click the <strong>"📧 Contact Developer"</strong> link on the Access modal to send an email request via Gmail with a pre-filled template including your name, role, and company.</p>
+        
+        <div class="tip-box">
+            <span class="box-icon">💡</span>
+            <div class="box-content">
+                <strong>Tip</strong>
+                License codes provide permanent access, while trial codes are great for evaluation. Contact the developer to obtain either type.
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section 3: Initial Setup -->
+    <section id="initial-setup">
+        <h1><span class="section-icon">⚙️</span> Initial Setup</h1>
+        
+        <h2>Step 1: Install Dependencies (First-Time Only)</h2>
+        <p>When you first launch BugWizard, a setup overlay will prompt you to install dependencies:</p>
+        <ol>
+            <li>Press <kbd>Alt</kbd>+<kbd>T</kbd> (or <kbd>Cmd</kbd>+<kbd>T</kbd> on Mac) to open the Terminal</li>
+            <li>Run the command: <code>heyo install bugwizard dependencies</code></li>
+            <li>Wait for installation to complete</li>
+            <li>This is a one-time setup process</li>
+        </ol>
+        
+        <h2>Step 2: Configure API Token (Required)</h2>
+        <p>Before using BugWizard's API features, you must configure your platform credentials:</p>
+        
+        <h3>For Azure DevOps:</h3>
+        <ol>
+            <li>Click the <strong>⚙️ Settings</strong> icon in the dock (bottom of screen)</li>
+            <li>Select <strong>"🔑 API Authentication"</strong></li>
+            <li>Enter your Personal Access Token (PAT)</li>
+            <li>Click <strong>"💾 Save Token"</strong></li>
+        </ol>
+        
+        <h3>For JIRA:</h3>
+        <ol>
+            <li>Click the <strong>⚙️ Settings</strong> icon in the dock</li>
+            <li>Select <strong>"🔑 API Authentication"</strong> (will show JIRA fields if JIRA platform is selected)</li>
+            <li>Enter your JIRA Domain (e.g., <code>your-company.atlassian.net</code>)</li>
+            <li>Enter your Email address</li>
+            <li>Enter your JIRA API Token</li>
+            <li>Enter your Default Project Key (e.g., <code>BUG</code>, <code>PROJ</code>)</li>
+            <li>Click <strong>"💾 Save JIRA Settings"</strong></li>
+        </ol>
+        
+        <div class="tip-box">
+            <span class="box-icon">💡</span>
+            <div class="box-content">
+                <strong>Tip</strong>
+                Generate a JIRA API token from <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank">Atlassian Account Settings</a>.
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <span class="box-icon">⚠️</span>
+            <div class="box-content">
+                <strong>Important</strong>
+                The PAT token is required for: Duplicate bug detection, Automatic retest comment submission, Bug status updates, Video/image attachment uploads, and QA Bug Dashboard.
+            </div>
+        </div>
+        
+        <h2>Step 3: Set Up Your Profile (Recommended)</h2>
+        <p>During the first-time onboarding, or via Settings:</p>
+        <ol>
+            <li>Enter your <strong>Full Name</strong></li>
+            <li>Enter your <strong>Email</strong> (choose from predefined domains or enter custom)</li>
+            <li>Click <strong>"🚀 Get Started"</strong> or save from the profile editor</li>
+        </ol>
+        
+        <h2>Step 4: Add Custom Apps (Optional)</h2>
+        <ol>
+            <li>Click <strong>⚙️ Settings</strong> → <strong>"📱 Custom Apps"</strong></li>
+            <li>Choose <strong>"➕ Add New App"</strong></li>
+            <li>Enter your application name → Click <strong>"➕ Next"</strong></li>
+            <li>Add markets (comma-separated) or click <strong>"Skip (No Markets)"</strong></li>
+            <li>Click <strong>"💾 Save App"</strong></li>
+        </ol>
+        
+        <div class="tip-box">
+            <span class="box-icon">💡</span>
+            <div class="box-content">
+                Your custom apps will appear in the "Select App" dropdown with a 🔹 icon.
+            </div>
+        </div>
+        
+        <h2>Step 5: Extend Default Apps (Optional)</h2>
+        <p>Add additional markets to your default applications:</p>
+        <ol>
+            <li>Click <strong>⚙️ Settings</strong> → <strong>"📱 Custom Apps"</strong></li>
+            <li>Choose <strong>"✨ Extend Default Apps"</strong></li>
+            <li>Select the default app from the dropdown</li>
+            <li>Enter market name(s) (comma-separated for multiple)</li>
+            <li>Click <strong>"➕ Add Market"</strong></li>
+        </ol>
+    </section>
+    
+    <!-- Section 4: Operating Modes -->
+    <section id="operating-modes">
+        <h1><span class="section-icon">🔄</span> Operating Modes</h1>
+        
+        <p>BugWizard operates in two distinct modes, controlled by the toggle switch at the top of the interface:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Mode</th>
+                    <th>Toggle Position</th>
+                    <th>Label</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge badge-green">Retester Mode</span></td>
+                    <td>OFF (Left)</td>
+                    <td>Developer's Chill Mode 🤩</td>
+                    <td>Submit retest reports as comments on existing bugs</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-purple">Bug Creator Mode</span></td>
+                    <td>ON (Right)</td>
+                    <td>Developer's Nightmare Mode 😨</td>
+                    <td>Create new bug work items in Azure DevOps or JIRA</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p>The toggle container changes color to indicate the active mode:</p>
+        <ul>
+            <li><span class="badge badge-purple">Purple</span> – Bug Creator Mode</li>
+            <li><span class="badge badge-green">Green</span> – Retester Mode</li>
+        </ul>
+    </section>
+    
+    <!-- Section 5: Bug Creator Mode -->
+    <section id="bug-creator">
+        <h1><span class="section-icon">🐛</span> Bug Creator Mode</h1>
+        <p style="font-style: italic; color: var(--secondary-color);">Developer's Nightmare Mode 😨</p>
+        
+        <p>Use this mode to create new bug reports in Azure DevOps or JIRA.</p>
+        
+        <h2>Required Fields</h2>
+        <p>Before parsing content, you must select from the dropdowns inside the text area:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Location</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🏷️ Issue Type</td>
+                    <td>Top-left inside textarea</td>
+                    <td>Functional, Regression, Enhancement</td>
+                </tr>
+                <tr>
+                    <td>📱 App</td>
+                    <td>Next to Issue Type</td>
+                    <td>Facebook, Instagram, Google or custom apps</td>
+                </tr>
+                <tr>
+                    <td>🌐 Market</td>
+                    <td>Next to App</td>
+                    <td>Varies by selected app</td>
+                </tr>
+                <tr>
+                    <td>🔄 Platform</td>
+                    <td>Badge in textarea</td>
+                    <td>Azure DevOps, JIRA (click to switch)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Step-by-Step Process</h2>
+        
+        <h3>1. Select Platform (Optional)</h3>
+        <p>Click the <strong>platform badge</strong> in the textarea to switch between Azure DevOps and JIRA if needed.</p>
+        
+        <h3>2. Select Required Fields</h3>
+        <ul>
+            <li>Select <strong>Issue Type</strong> (Functional, Regression, or Enhancement)</li>
+            <li>Select <strong>App</strong> (Facebook, Instagram, Google or your custom apps)</li>
+            <li>Select <strong>Market</strong> (required for any of your app)</li>
+        </ul>
+        
+        <h3>3. Get Starter Template (Optional)</h3>
+        <p>Click the <strong>"📋 Template"</strong> button to insert a pre-formatted bug report template into the textarea. This helps ensure you include all required fields.</p>
+        
+        <h3>4. Paste Bug Report Content</h3>
+        <p>Paste your markdown-formatted bug report into the text area. The expected format includes sections for Title, Severity, Priority, Repro Steps, Device Details, Steps to Reproduce, Expected Behavior, Actual Behavior, and more.</p>
+        
+        <div class="tip-box">
+            <span class="box-icon">💡</span>
+            <div class="box-content">
+                <strong>Tip</strong>
+                You can also use the <strong>🎤 Voice-to-Text</strong> button to dictate your bug description, then click the AI Generate button to format it into a proper bug report.
+            </div>
+        </div>
+        
+        <h3>5. Attach Evidence (Optional)</h3>
+        <p>Click <strong>"📎 Attach an Evidence"</strong> to add video or image proof:</p>
+        <ul>
+            <li>Supports MP4, WebM, MOV, AVI, JPG, JPEG, PNG formats</li>
+            <li>Use the built-in Video Compressor if your file exceeds 30MB</li>
+            <li>Multiple files can be attached</li>
+            <li>Undo option available for accidentally removed attachments</li>
+        </ul>
+        
+        <h3>4. Parse the Content</h3>
+        <p>Click <strong>"Parse Pasted Content"</strong> to extract bug details. The parsed information displays below.</p>
+        
+        <h3>5. Create the Bug</h3>
+        <p>Click <strong>"Let's do the Magic 🪄"</strong> to initiate bug creation:</p>
+        
+        <div class="info-box">
+            <span class="box-icon">📋</span>
+            <div class="box-content">
+                <strong>Bug Creation Steps:</strong><br>
+                <strong>Step A:</strong> Duplicate Check – BugWizard searches for similar existing bugs<br>
+                <strong>Step B:</strong> Path Selection – Enter Area Path and Iteration Path (optional)<br>
+                <strong>Step C:</strong> Bug Creation – Azure DevOps opens with the bug form pre-filled
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section 6: Retester Mode -->
+    <section id="retester-mode">
+        <h1><span class="section-icon">✅</span> Retester Mode</h1>
+        <p style="font-style: italic; color: var(--success-color);">Developer's Chill Mode 🤩</p>
+        
+        <p>Use this mode to submit retest reports as comments on existing bugs in Azure DevOps or JIRA.</p>
+        
+        <h2>Step-by-Step Process</h2>
+        
+        <h3>1. Enter Bug ID</h3>
+        <p>When in Retester Mode, a <strong>Bug ID input field</strong> appears inside the text area (top-left). Enter the work item ID (Azure DevOps) or issue key (JIRA, e.g., <code>BUG-123</code>) of the bug you're retesting.</p>
+        
+        <h3>2. Paste Retest Report</h3>
+        <p>Paste your markdown-formatted retest report including Status (Passed/Failed), Description, Device Model, OS Version, App Version, Testing Environment, Retesting Date, Retested By, and Conclusion.</p>
+        
+        <h3>3. Parse and Submit</h3>
+        <ol>
+            <li>Click <strong>"Parse Pasted Content"</strong> to extract retest details</li>
+            <li>Review the parsed data</li>
+            <li>Click <strong>"Add Retest Comment 📝"</strong> to submit</li>
+            <li>Confirm the submission in the dialog</li>
+        </ol>
+        
+        <h2>What Happens on Submission</h2>
+        <p>The following occurs automatically via Azure DevOps REST API (or JIRA REST API if JIRA is selected):</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Comment Added</td>
+                    <td>A professionally formatted HTML comment is added to the bug's Discussion section (ADO) or Comments (JIRA)</td>
+                </tr>
+                <tr>
+                    <td>Status Updated</td>
+                    <td><strong>Passed</strong> → Bug state set to "Fixed" (ADO) or configured transition (JIRA)<br><strong>Failed</strong> → Bug state set to "Failed" (ADO) or configured transition (JIRA)</td>
+                </tr>
+                <tr>
+                    <td>Tags Updated</td>
+                    <td>Device-specific tags added (iPad/iPhone)</td>
+                </tr>
+                <tr>
+                    <td>Work Item Opens</td>
+                    <td>Azure DevOps or JIRA opens in a new tab showing the updated bug</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="warning-box">
+            <span class="box-icon">⚠️</span>
+            <div class="box-content">
+                <strong>Requirement</strong>
+                PAT token must be configured with Write permissions for this feature to work.
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section 7: Duplicate Bug Detector -->
+    <section id="duplicate-detector">
+        <h1><span class="section-icon">🔍</span> Duplicate Bug Detector</h1>
+        
+        <p>A standalone tool to search for existing bugs without creating a new one.</p>
+        
+        <h2>Accessing the Detector</h2>
+        <ol>
+            <li>Click the <strong>🐞 Duplicate Bug Detector</strong> icon in the dock</li>
+            <li>A loading overlay briefly appears (requires ADO PAT API)</li>
+            <li>Enter the bug title to search for</li>
+        </ol>
+        
+        <h2>Using the Detector</h2>
+        <ol>
+            <li>Enter a bug title (e.g., <code>[MyApp] - [Region A] - Login screen crashes on iPad</code>)</li>
+            <li>Click <strong>"🔍 Search Duplicates Bugs 🐞"</strong></li>
+            <li>Review results – click any item to open it in Azure DevOps</li>
+        </ol>
+        
+        <h2>Search Algorithm</h2>
+        <ul>
+            <li>Extracts keywords from the title (excludes common words)</li>
+            <li>Uses top 6 most significant keywords</li>
+            <li>Searches bugs in your configured project for faster results</li>
+            <li>Returns up to 10 most recent matches</li>
+        </ul>
+    </section>
+    
+    <!-- Section 8: Video Compressor -->
+    <section id="video-compressor">
+        <h1><span class="section-icon">🎬</span> Video Compressor & Evidence</h1>
+        
+        <p>BugWizard includes a built-in video compressor and evidence attachment system.</p>
+        
+        <h2>Accessing the Compressor</h2>
+        <ul>
+            <li>Click <strong>"📎 Attach an Evidence"</strong> button in the main text area, OR</li>
+            <li>Click the <strong>🗃️ More Tools</strong> icon → <strong>🎬 Video Compressor & Auto Uploader</strong></li>
+        </ul>
+        
+        <h2>Supported Formats</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Formats</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Video</td>
+                    <td>MP4, WebM, MOV, AVI</td>
+                </tr>
+                <tr>
+                    <td>Image</td>
+                    <td>JPG, JPEG, PNG</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Compression Features</h2>
+        <ol>
+            <li><strong>File Upload</strong> – Click or drag & drop your evidence file</li>
+            <li><strong>File Details Accordion</strong> – View file name, size, duration, and resolution</li>
+            <li><strong>Compression Settings Accordion:</strong>
+                <ul>
+                    <li><strong>Target Size:</strong> 10MB, 20MB, or 30MB</li>
+                    <li><strong>Quality:</strong> Adjustable slider (30% - 100%)</li>
+                    <li><strong>Resolution Scale:</strong> Original, 75%, or 50%</li>
+                </ul>
+            </li>
+            <li><strong>Progress Tracking</strong> – Real-time compression progress bar</li>
+            <li><strong>Results</strong> – Shows original size, compressed size, and savings percentage</li>
+        </ol>
+    </section>
+    
+    <!-- Section 9: Activity Statistics -->
+    <section id="activity-stats">
+        <h1><span class="section-icon">📊</span> Activity Statistics & Charts</h1>
+        
+        <p>BugWizard tracks your bug creation and retest activities with visual analytics powered by Chart.js.</p>
+        
+        <h2>Viewing Statistics</h2>
+        <p>The <strong>📊 Activity Stats</strong> panel appears on the left side of the screen showing:</p>
+        <ul>
+            <li><strong>Activity Chart</strong> – Visual timeline of bugs created and retested</li>
+            <li><strong>🐛 Created Count</strong> – Total bugs created</li>
+            <li><strong>✅ Retested Count</strong> – Total bugs retested</li>
+            <li><strong>📅 This Month</strong> – Combined activity for current month</li>
+        </ul>
+        
+        <h2>Chart Features</h2>
+        <ul>
+            <li>Interactive hover for detailed data points</li>
+            <li>Responsive updates as you create/retest bugs</li>
+            <li>Data persists across sessions</li>
+            <li>Empty state message when no activity yet</li>
+        </ul>
+    </section>
+    
+    <!-- Section 10: User Profile -->
+    <section id="user-profile">
+        <h1><span class="section-icon">👤</span> User Profile & Personalization</h1>
+        
+        <h2>Personalized Experience</h2>
+        <ul>
+            <li><strong>Splash Screen Greeting</strong> – "Good Morning/Afternoon/Evening, [Name]! 👋"</li>
+            <li><strong>Main Interface Greeting</strong> – "Hi [Name], what do you want me to create for you?"</li>
+            <li><strong>Profile Card</strong> – Displays your name, email, and avatar initials in Settings</li>
+        </ul>
+        
+        <h2>Editing Your Profile</h2>
+        <ol>
+            <li>Click <strong>⚙️ Settings</strong> in the dock</li>
+            <li>Click the <strong>✏️ Edit</strong> button on your profile card</li>
+            <li>Update your name and/or email</li>
+            <li>Click <strong>"💾 Save Changes"</strong></li>
+        </ol>
+        
+        <h2>Email Domain Options</h2>
+        <p>When setting email, choose from: @gmail.com, @outlook.com, @hotmail.com, @yahoo.com, or Custom (enter full email address).</p>
+        
+        <h2>Deleting Your Profile & Clearing Data</h2>
+        <ol>
+            <li>Open the profile editor</li>
+            <li>Click the <strong>🗑️ Delete</strong> button</li>
+            <li>Confirm deletion – this will clear all localStorage, sessionStorage, cookies, Cache Storage, and unregister service workers</li>
+        </ol>
+    </section>
+    
+    <!-- Section 11: Settings -->
+    <section id="settings">
+        <h1><span class="section-icon">⚙️</span> Settings Configuration</h1>
+        
+        <p>Access settings by clicking the <strong>⚙️ Settings</strong> icon in the dock.</p>
+        
+        <h2>Settings Menu Options</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Option</th>
+                    <th>Icon</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>API Authentication</td>
+                    <td>🔑</td>
+                    <td>Configure your Azure DevOps PAT token or JIRA API credentials</td>
+                </tr>
+                <tr>
+                    <td>Field Mappings</td>
+                    <td>📝</td>
+                    <td>Modify ADO field names (requires 6-digit password)</td>
+                </tr>
+                <tr>
+                    <td>Custom Apps</td>
+                    <td>📱</td>
+                    <td>Add custom apps or extend default apps</td>
+                </tr>
+                <tr>
+                    <td>Custom Themes</td>
+                    <td>🎨</td>
+                    <td>Personalize your color scheme (16 options)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>🎨 Custom Themes</h2>
+        <p>Choose from 16 beautiful color schemes:</p>
+        <p><span class="badge badge-purple">Purple Magic</span> <span class="badge badge-blue">Ocean Blue</span> <span class="badge badge-green">Forest Green</span> <span class="badge badge-orange">Sunset Orange</span> <span class="badge badge-pink">Rose Pink</span> <span class="badge badge-gold">Golden Glow</span> <span class="badge badge-red">Crimson Red</span> <span class="badge badge-cyan">Cyber Cyan</span> <span class="badge badge-lime">Neon Lime</span> <span class="badge badge-violet">Deep Violet</span> <span class="badge badge-teal">Teal Wave</span> <span class="badge badge-coral">Coral Reef</span> <span class="badge badge-indigo">Indigo Night</span> <span class="badge badge-amber">Amber Glow</span> <span class="badge badge-mint">Mint Fresh</span> <span class="badge badge-rainbow">Rainbow</span></p>
+    </section>
+    
+    <!-- Section 12: Platform Selection & JIRA Integration -->
+    <section id="platform-selection">
+        <h1><span class="section-icon">🌐</span> Platform Selection & JIRA Integration</h1>
+        
+        <p>BugWizard supports both <strong>Microsoft Azure DevOps</strong> and <strong>Atlassian JIRA</strong> as bug tracking platforms.</p>
+        
+        <h2>Switching Platforms</h2>
+        <p>There are multiple ways to switch between platforms:</p>
+        
+        <h3>Method 1: Platform Badge (Recommended)</h3>
+        <ol>
+            <li>Look for the platform badge inside the textarea (shows "Microsoft Azure DevOps" or "Atlassian JIRA")</li>
+            <li>Click the badge to open the Platform Selection modal</li>
+            <li>Select your desired platform</li>
+            <li>The UI will update to reflect the selected platform</li>
+        </ol>
+        
+        <h2>Platform-Specific Features</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Azure DevOps</th>
+                    <th>JIRA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Bug Creation</td><td>✅ Work Items API</td><td>✅ Issues API</td></tr>
+                <tr><td>Retest Comments</td><td>✅ Discussion section</td><td>✅ Comments</td></tr>
+                <tr><td>Duplicate Detection</td><td>✅ WIQL queries</td><td>✅ JQL queries</td></tr>
+                <tr><td>File Attachments</td><td>✅ PAT authentication</td><td>✅ API Token auth</td></tr>
+                <tr><td>Status Updates</td><td>✅ State field</td><td>✅ Transitions</td></tr>
+                <tr><td>Dashboard</td><td>✅ Full support</td><td>✅ Full support</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>JIRA Configuration</h2>
+        <p>When JIRA is selected, configure the following in Settings → API Authentication:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>JIRA Domain</td><td>Your Atlassian domain</td><td><code>your-company.atlassian.net</code></td></tr>
+                <tr><td>Email</td><td>Your Atlassian account email</td><td><code>user@company.com</code></td></tr>
+                <tr><td>API Token</td><td>JIRA API token from Atlassian</td><td>Generate from account settings</td></tr>
+                <tr><td>Project Key</td><td>Default project for bug creation</td><td><code>BUG</code>, <code>PROJ</code>, <code>QA</code></td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Platform Indicator</h2>
+        <p>The platform indicator appears in multiple locations:</p>
+        <ul>
+            <li><strong>Textarea Badge</strong> – Shows current platform, clickable to change</li>
+            <li><strong>Dock Icon</strong> – Shows ADO or JIRA icon based on selection</li>
+            <li><strong>Status Indicator</strong> – Shows connection status for current platform</li>
+            <li><strong>Login Reminder</strong> – Reminds you to log into the selected platform</li>
+        </ul>
+    </section>
+    
+    <!-- Section 13: Voice-to-Text Input -->
+    <section id="voice-to-text">
+        <h1><span class="section-icon">🎤</span> Voice-to-Text Input</h1>
+        
+        <p>BugWizard includes a voice input feature for hands-free bug description entry.</p>
+        
+        <h2>Accessing Voice Input</h2>
+        <p>Click the <strong>🎤 microphone button</strong> in the textarea to start voice recording.</p>
+        
+        <h2>How to Use</h2>
+        <ol>
+            <li>Click the <strong>🎤</strong> button – it will start glowing/animating</li>
+            <li>Speak your bug description clearly</li>
+            <li>The speech will be transcribed into the textarea in real-time</li>
+            <li>Click the button again to stop recording</li>
+        </ol>
+        
+        <h2>Voice Recording States</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Visual</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Ready</td><td>🎤</td><td>Click to start recording</td></tr>
+                <tr><td>Listening</td><td>🎤 (animated waves)</td><td>Actively transcribing speech</td></tr>
+                <tr><td>Not Supported</td><td>🎤 (grayed out)</td><td>Browser doesn't support speech recognition</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Browser Compatibility</h2>
+        <p>Voice-to-Text works best in:</p>
+        <ul>
+            <li>✅ <strong>Google Chrome</strong> (recommended)</li>
+            <li>✅ <strong>Microsoft Edge</strong></li>
+            <li>⚠️ <strong>Firefox</strong> (limited support)</li>
+            <li>⚠️ <strong>Safari</strong> (limited support)</li>
+        </ul>
+        
+        <div class="tip-box">
+            <span class="box-icon">💡</span>
+            <div class="box-content">
+                <strong>Tip</strong>
+                For best results, speak clearly and in a quiet environment. The AI can help format your spoken description into a proper bug report.
+            </div>
+        </div>
+        
+        <h2>Combining with AI</h2>
+        <p>After dictating your bug description:</p>
+        <ol>
+            <li>Click the <strong>AI Generate button</strong> (Lottie animation)</li>
+            <li>Ozzy AI will format your spoken words into a proper markdown bug report</li>
+            <li>Parse the generated content as usual</li>
+        </ol>
+    </section>
+    
+    <!-- Section 14: Launchpad -->
+    <section id="launchpad">
+        <h1><span class="section-icon">🚀</span> Launchpad</h1>
+        
+        <p>BugWizard features a macOS-style Launchpad for quick access to all tools and features.</p>
+        
+        <h2>Accessing Launchpad</h2>
+        <ul>
+            <li>Click the <strong>Launchpad icon</strong> in the dock (animated grid icon)</li>
+            <li>Press the <strong>Launchpad keyboard shortcut</strong> (if configured)</li>
+        </ul>
+        
+        <h2>Launchpad Pages</h2>
+        
+        <h3>Page 1 – Main Tools:</h3>
+        <ul>
+            <li>🪄 <strong>BugWizard Bug Report Generator</strong> – Main application</li>
+            <li>🐞 <strong>Duplicate Bug Detector</strong> – Search for existing bugs</li>
+            <li>🧪 <strong>Test Case Optimizer & Reprioritizer</strong> – AI test analysis</li>
+            <li>🤖 <strong>Ozzy AI Assistant</strong> – Intelligent QA chatbot</li>
+            <li>💻 <strong>Terminal</strong> – Built-in command line</li>
+            <li><strong>Azure DevOps Board</strong> – Open ADO directly</li>
+            <li><strong>Atlassian JIRA Board</strong> – Open JIRA directly</li>
+        </ul>
+        
+        <h3>Page 2 – Utilities:</h3>
+        <ul>
+            <li>🎬 <strong>Video Compressor & Auto Uploader</strong> – Evidence compression</li>
+            <li>🧪 <strong>API Flow Tester</strong> – REST API testing tool</li>
+            <li>📊 <strong>User Bug Dashboard</strong> – View your bugs</li>
+            <li>💳 <strong>QA Testing Credit Cards</strong> – Test card numbers</li>
+        </ul>
+        
+        <h3>Page 3 – Settings & Info:</h3>
+        <ul>
+            <li>🌐 <strong>Important Websites</strong> – Saved bookmarks</li>
+            <li>🗑️ <strong>History</strong> – Parse history</li>
+            <li>🗃️ <strong>More Apps</strong> – Additional tools</li>
+            <li>⚙️ <strong>Developer Settings</strong> – Configuration</li>
+            <li>🌙/☀️ <strong>Dark Mode</strong> – Theme toggle</li>
+            <li>ℹ️ <strong>Help & Info</strong> – Documentation</li>
+            <li>👨‍💻 <strong>About Us</strong> – Application info</li>
+            <li>📧 <strong>Contact Us</strong> – Support</li>
+        </ul>
+        
+        <h2>Launchpad Navigation</h2>
+        <ul>
+            <li><strong>Swipe left/right</strong> – Navigate between pages</li>
+            <li><strong>Click dots</strong> – Jump to specific page</li>
+            <li><strong>Press ESC</strong> – Close Launchpad</li>
+            <li><strong>Click outside</strong> – Close Launchpad</li>
+            <li><strong>Search</strong> – Type to filter apps</li>
+        </ul>
+        
+        <h2>Launchpad Search</h2>
+        <p>Start typing while Launchpad is open to filter apps:</p>
+        <ul>
+            <li>Search by app name</li>
+            <li>Search by keywords</li>
+            <li>Results highlight matching apps</li>
+        </ul>
+    </section>
+    
+    <!-- Section 15: Dock Features -->
+    <section id="dock-features">
+        <h1><span class="section-icon">🎯</span> Dock Features</h1>
+        
+        <p>The macOS-style dock at the bottom provides quick access to various features:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Icon</th>
+                    <th>Feature</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>ℹ️</td><td>Help & Info</td><td>View usage instructions and tips</td></tr>
+                <tr><td>🚀</td><td>Launchpad</td><td>macOS-style app launcher with search</td></tr>
+                <tr><td>🪄</td><td>Launch BugWizard</td><td>Open AI-powered Report Generator</td></tr>
+                <tr><td>🐞</td><td>Duplicate Bug Detector</td><td>Search for existing bugs by title</td></tr>
+                <tr><td>📝</td><td>Test Case Generator</td><td>AI-powered test case generation (Coming Soon)</td></tr>
+                <tr><td>🧪</td><td>Test Case Optimizer</td><td>AI-powered test case analysis</td></tr>
+                <tr><td>🤖</td><td>Agentron Store</td><td>Browse QA automation agents (Coming Soon)</td></tr>
+                <tr><td>ADO/JIRA</td><td>Platform</td><td>Open Azure DevOps or JIRA (based on selection)</td></tr>
+                <tr><td>👨‍💻</td><td>About Us</td><td>View application information</td></tr>
+                <tr><td>📧</td><td>Contact Us</td><td>Contact the developer (Email, Teams, GitHub)</td></tr>
+                <tr><td>🗑️</td><td>History</td><td>View and reload parsed reports</td></tr>
+                <tr><td>🗃️</td><td>More Tools</td><td>Access additional utilities</td></tr>
+                <tr><td>🤖</td><td>Ozzy AI</td><td>AI-powered QA assistant</td></tr>
+                <tr><td>💻</td><td>Terminal</td><td>Built-in command-line interface</td></tr>
+                <tr><td>🌙/☀️</td><td>Dark Mode</td><td>Toggle between themes</td></tr>
+                <tr><td>⚙️</td><td>Settings</td><td>Access developer settings menu</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Dock Behaviors</h2>
+        <ul>
+            <li><strong>Hover</strong> – Items scale up with tooltip displayed</li>
+            <li><strong>Click</strong> – Bounce animation plays</li>
+            <li><strong>Red pulsing border (neon-alert)</strong> – Indicates minimized modal (click to restore)</li>
+            <li><strong>Dock separator</strong> – Visual divider between feature groups</li>
+        </ul>
+        
+        <h2>Modal Minimize Feature</h2>
+        <p>All major modals support minimizing:</p>
+        <ul>
+            <li><strong>Help Modal</strong> – Minimizes to dock; info icon pulses red</li>
+            <li><strong>Settings Modal</strong> – Minimizes to dock; settings icon pulses red</li>
+            <li><strong>Duplicate Detector</strong> – Minimizes to dock; detector icon pulses red</li>
+            <li><strong>Ozzy AI</strong> – Minimizes to AI icon</li>
+            <li><strong>Video Compressor</strong> – Minimizes to More Apps icon</li>
+            <li><strong>API Tester</strong> – Minimizes to dock</li>
+            <li><strong>Test Case Optimizer</strong> – Minimizes to dock</li>
+            <li><strong>Test Case Generator</strong> – Minimizes to dock (Coming Soon)</li>
+            <li><strong>Agentron Store</strong> – Minimizes to dock (Coming Soon)</li>
+        </ul>
+        <p>Click the pulsing dock icon to restore the modal.</p>
+    </section>
+    
+    <!-- Section 13: More Tools -->
+    <section id="more-tools">
+        <h1><span class="section-icon">🗃️</span> More Tools</h1>
+        
+        <p>Access additional utilities via the <strong>🗃️ More Tools</strong> dock icon:</p>
+        
+        <h2>🎬 Video Compressor & Auto Uploader</h2>
+        <p>Standalone video compression tool for evidence files. Compress videos before attaching to bug reports.</p>
+        
+        <h2>📊 User's Bug Dashboard</h2>
+        <p>View all bugs you've created in Azure DevOps or JIRA:</p>
+        <ul>
+            <li><strong>Filter by State</strong> – Toggle "Ready for Retest" to show only bugs ready for retesting</li>
+            <li><strong>Sort Order</strong> – Newest or Oldest first</li>
+            <li><strong>Limit</strong> – Show 25, 50, 100, or all bugs</li>
+            <li><strong>Quick Access</strong> – Click any bug to open in Azure DevOps or JIRA</li>
+        </ul>
+        
+        <h2>💳 QA Testing Credit Cards</h2>
+        <p>Quick access to test payment card numbers organized by type (Visa, Mastercard, Amex, Discover). Click to copy card numbers instantly.</p>
+        
+        <h2>🌐 Your Important Websites</h2>
+        <p>Save and organize frequently used websites with easy launch buttons.</p>
+        
+        <h2>🔌 API Flow Tester</h2>
+        <p>Full-featured web-based API testing tool. See the <a href="#api-tester">API Flow Tester</a> section for details.</p>
+        
+        <h2>🤖 Agentron Store <span class="badge badge-purple">Coming Soon</span></h2>
+        <p>QA automation agent marketplace. See the <a href="#agentron-store">Agentron Store</a> section for details.</p>
+    </section>
+    
+    <!-- Section 14: AI Assistant -->
+    <section id="ai-assistant">
+        <h1><span class="section-icon">🤖</span> Ozzy AI</h1>
+        
+        <p>Access the AI-powered QA assistant via the <strong>🤖</strong> icon in the dock.</p>
+        
+        <h2>Supported AI Providers</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Provider</th>
+                    <th>Description</th>
+                    <th>Model</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Groq</td><td>Free & Fast (Default)</td><td>Llama 3.3 70B</td></tr>
+                <tr><td>OpenRouter</td><td>Free tier available</td><td>Mistral 7B</td></tr>
+                <tr><td>Google Gemini</td><td>Google's AI</td><td>Gemini 2.0 Flash</td></tr>
+                <tr><td>OpenAI GPT</td><td>GPT models</td><td>GPT-4o</td></tr>
+                <tr><td>Anthropic Claude</td><td>Claude models</td><td>Claude 3.5 Sonnet</td></tr>
+                <tr><td>xAI Grok</td><td>Grok AI</td><td>Grok Beta</td></tr>
+                <tr><td>Azure OpenAI</td><td>Enterprise Azure</td><td>GPT-4o</td></tr>
+                <tr><td>DeepSeek</td><td>DeepSeek AI</td><td>DeepSeek Chat</td></tr>
+                <tr><td>Alibaba Qwen</td><td>Qwen models</td><td>Qwen Turbo</td></tr>
+                <tr><td>Zhipu GLM</td><td>GLM models</td><td>GLM-4</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Multi-provider support</strong> – Switch between 10 AI providers seamlessly</li>
+            <li><strong>Persistent conversations</strong> – Chat history saved within session</li>
+            <li><strong>Quick action templates</strong> – Pre-built templates that insert directly into chat:
+                <ul>
+                    <li>🐛 <strong>Bug Reports</strong> – Inserts bug report template with fields for title, version, device, etc.</li>
+                    <li>🔄 <strong>Bug Retest</strong> – Inserts retest template with device and tester info</li>
+                    <li>🔍 <strong>Issue Analysis</strong> – Get AI analysis of issues</li>
+                    <li>💡 <strong>QA Best Practices</strong> – Learn QA methodologies</li>
+                </ul>
+            </li>
+            <li><strong>Train AI for Your Project</strong> – Upload custom training data (see next section)</li>
+            <li><strong>API key storage</strong> – Keys stored locally only with security warnings for CORS-limited providers</li>
+            <li><strong>Sidebar navigation</strong> – Upload training data and manage chat sessions</li>
+        </ul>
+        
+        <h2>Provider Hints</h2>
+        <ul>
+            <li><span class="badge badge-green">✅ Green checkmark</span> – Free tier available (Groq, OpenRouter)</li>
+            <li><span class="badge badge-orange">⚠️ Orange warning</span> – May have CORS issues in browser (OpenAI, Claude, Grok, DeepSeek, Qwen, GLM)</li>
+        </ul>
+        
+        <h2>Setup</h2>
+        <ol>
+            <li>Select your preferred AI provider from the sidebar dropdown</li>
+            <li>Enter your API key (for Azure OpenAI, also enter endpoint and deployment name)</li>
+            <li>Click <strong>"🚀 Connect"</strong></li>
+            <li>Optionally upload training data for project-specific responses</li>
+            <li>Start chatting with Ozzy AI</li>
+        </ol>
+    </section>
+    
+    <!-- Section 15: Train AI for Your Project -->
+    <section id="train-ai">
+        <h1><span class="section-icon">🧠</span> Train AI for Your Project</h1>
+        
+        <p>BugWizard allows you to upload custom training data to make AI responses more relevant to your specific project.</p>
+        
+        <h2>What is AI Training Data?</h2>
+        <p>Training data is project-specific context that gets injected into every AI conversation. This helps the AI understand:</p>
+        <ul>
+            <li>Your project's terminology and naming conventions</li>
+            <li>Specific testing requirements and workflows</li>
+            <li>Known issues and edge cases</li>
+            <li>Team standards and best practices</li>
+        </ul>
+        
+        <h2>How to Upload Training Data</h2>
+        
+        <h3>Method 1: From Ozzy AI Sidebar</h3>
+        <ol>
+            <li>Open Ozzy AI (🤖 icon in dock)</li>
+            <li>Click <strong>"📄 Upload Training Data (.md / .json)"</strong> in the sidebar</li>
+            <li>Select your training file</li>
+            <li>The file will be loaded and shown in the sidebar with a 🧠 icon</li>
+        </ol>
+        
+        <h3>Method 2: From Connect AI Provider Card</h3>
+        <ol>
+            <li>Open Ozzy AI</li>
+            <li>In the "Train AI for Your Project" card at the bottom</li>
+            <li>Click <strong>"📄 Upload Training Data (.md / .json)"</strong></li>
+            <li>Select your training file</li>
+        </ol>
+        
+        <h2>Supported File Formats</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Format</th>
+                    <th>Extension</th>
+                    <th>Best For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Markdown</td><td><code>.md</code></td><td>Documentation, guides, structured text</td></tr>
+                <tr><td>JSON</td><td><code>.json</code></td><td>Structured data, configurations</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Training Data Indicator</h2>
+        <p>Once training data is loaded:</p>
+        <ul>
+            <li><strong>Sidebar:</strong> Shows 🧠 icon with filename (e.g., "project-guide.md")</li>
+            <li><strong>Bottom Card:</strong> Shows ✓ with file size (e.g., "project-guide.md (15.2 KB loaded)")</li>
+        </ul>
+        
+        <h2>Removing Training Data</h2>
+        <ul>
+            <li><strong>Sidebar:</strong> Click the <strong>✕</strong> button next to the filename</li>
+            <li><strong>Bottom Card:</strong> Click the <strong>✕</strong> button in the status area</li>
+        </ul>
+        
+        <h2>How Training Data Works</h2>
+        <p>When you send a message to the AI, BugWizard:</p>
+        <ol>
+            <li>Loads the base system prompt (Ozzy AI context)</li>
+            <li>Appends your training data as "PROJECT-SPECIFIC TRAINING DATA"</li>
+            <li>Sends the combined context with your message</li>
+        </ol>
+        <p>This ensures every response is informed by your project-specific information.</p>
+        
+        <div class="tip-box">
+            <span class="box-icon">💡</span>
+            <div class="box-content">
+                <strong>Best Practices for Training Data</strong>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Keep it concise – Include only relevant information</li>
+                    <li>Use clear headings – Help AI understand document structure</li>
+                    <li>Include examples – Show expected formats and outcomes</li>
+                    <li>Update regularly – Keep training data current with project changes</li>
+                    <li>Use markdown – Well-formatted .md files work best</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h2>Storage</h2>
+        <ul>
+            <li>Training data is stored in browser localStorage</li>
+            <li>Key: <code>aiTrainingData</code> (content)</li>
+            <li>Key: <code>aiTrainingFileName</code> (display name)</li>
+            <li>Data persists across browser sessions</li>
+        </ul>
+    </section>
+    
+    <!-- Section 15: Terminal -->
+    <section id="terminal">
+        <h1><span class="section-icon">💻</span> Built-in Terminal</h1>
+        
+        <p>Access the terminal via <kbd>Alt</kbd>+<kbd>T</kbd> (or <kbd>Cmd</kbd>+<kbd>T</kbd> on Mac) or click the <strong>💻</strong> Terminal icon in the dock.</p>
+        
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Boot sequence animation</strong> – ASCII art and welcome message</li>
+            <li><strong>25+ built-in commands</strong></li>
+            <li><strong>Command history</strong> – Navigate with up/down arrows</li>
+            <li><strong>Status bar</strong> – Shows connection status, directory, time, encoding</li>
+        </ul>
+        
+        <h2>Available Commands</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>help</code></td><td>Display available commands</td></tr>
+                <tr><td><code>clear</code></td><td>Clear terminal output</td></tr>
+                <tr><td><code>heyo</code></td><td>Main command interface</td></tr>
+                <tr><td><code>heyo install bugwizard dependencies</code></td><td>Install required dependencies</td></tr>
+                <tr><td><code>version</code></td><td>Show BugWizard version</td></tr>
+                <tr><td><code>whoami</code></td><td>Display current user</td></tr>
+                <tr><td><code>date</code></td><td>Show current date and time</td></tr>
+                <tr><td><code>uptime</code></td><td>Show session duration</td></tr>
+            </tbody>
+        </table>
+    </section>
+    
+    <!-- Section 16: Test Case Optimizer -->
+    <section id="test-optimizer">
+        <h1><span class="section-icon">🧪</span> Test Case Optimizer & Reprioritizer</h1>
+        
+        <p>Access via the <strong>🧪</strong> icon in the dock for AI-powered test case analysis.</p>
+        
+        <h2>Features</h2>
+        <ul>
+            <li><strong>CSV/Excel Import</strong> – Upload test case files (.csv, .xlsx, .xls)</li>
+            <li><strong>Column Mapping</strong> – Map your file columns to required fields</li>
+            <li><strong>AI Analysis</strong> – Automatic severity classification and optimization</li>
+            <li><strong>Duplicate Detection</strong> – Find and merge similar test cases</li>
+            <li><strong>Consolidation</strong> – Combine related test cases</li>
+            <li><strong>Automation Recommendations</strong> – Identify test cases ready for automation</li>
+        </ul>
+        
+        <h2>Analysis Settings</h2>
+        <ul>
+            <li><strong>Similarity Threshold</strong> – 70% to 95% for duplicate detection</li>
+            <li><strong>Severity Confidence</strong> – 60% to 95% minimum confidence for classification</li>
+        </ul>
+        
+        <h2>Results Dashboard</h2>
+        <ul>
+            <li>Executive Summary with optimization overview</li>
+            <li>Summary Cards: Original, Optimized, Removed/Merged, Reduction %</li>
+            <li>Severity Distribution Bar (S1/S2/S3/S4)</li>
+            <li>Charts: Before vs After comparison, Severity Classification pie chart</li>
+            <li>Tabbed Details: Severity, Duplicates, Consolidated, Automation, Final Suite</li>
+        </ul>
+        
+        <h2>Export Options</h2>
+        <ul>
+            <li><strong>📥 Export Optimized CSV</strong> – Download optimized test suite</li>
+            <li><strong>📊 Download PDF Report</strong> – Full analysis report with charts</li>
+        </ul>
+    </section>
+    
+    <!-- Section: Test Case Generator (Coming Soon) -->
+    <section id="testcase-generator">
+        <h1><span class="section-icon">📝</span> Test Case Generator <span class="badge badge-purple">Coming Soon</span></h1>
+        
+        <p>Access via the <strong>📝</strong> icon in the dock. This feature is currently under development.</p>
+        
+        <h2>Planned Features</h2>
+        <ul>
+            <li><strong>Requirements Parsing</strong> – Parse requirements from text, markdown, or JIRA user stories</li>
+            <li><strong>AI-Powered Generation</strong> – Automatically generate comprehensive test cases</li>
+            <li><strong>Positive & Negative Cases</strong> – Generate both happy path and edge case scenarios</li>
+            <li><strong>Boundary Value Analysis</strong> – Automatic boundary value test case generation</li>
+            <li><strong>BDD/Gherkin Support</strong> – Generate scenarios in Gherkin format (Given/When/Then)</li>
+            <li><strong>Equivalence Partitioning</strong> – Smart partitioning suggestions</li>
+            <li><strong>Traceability Matrix</strong> – Auto-create requirement-to-test-case mapping</li>
+            <li><strong>Test Data Generation</strong> – Generate test data for each scenario</li>
+            <li><strong>Export Options</strong> – Export to Azure Test Plans or JIRA Xray</li>
+        </ul>
+        
+        <h2>Generation Capabilities</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Capability</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>📄 Requirements Parse</td><td>Extract testable requirements from any format</td></tr>
+                <tr><td>✅ Positive Cases</td><td>Generate happy path test scenarios</td></tr>
+                <tr><td>❌ Negative Cases</td><td>Generate error handling and edge cases</td></tr>
+                <tr><td>⚡ Edge Cases</td><td>Identify and generate boundary conditions</td></tr>
+                <tr><td>🥒 BDD/Gherkin</td><td>Output in Cucumber-compatible format</td></tr>
+                <tr><td>📊 Boundary Values</td><td>Automatic min/max/boundary testing</td></tr>
+                <tr><td>🔗 Traceability</td><td>Link test cases to requirements</td></tr>
+                <tr><td>📤 ADO/JIRA Export</td><td>Direct export to test management tools</td></tr>
+            </tbody>
+        </table>
+        
+        <div class="info-box">
+            <span class="box-icon">🎯</span>
+            <div class="box-content">
+                <strong>Note</strong>
+                This feature will provide 100% test coverage from a single requirement document.
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section: Agentron Store (Coming Soon) -->
+    <section id="agentron-store">
+        <h1><span class="section-icon">🤖</span> Agentron Store <span class="badge badge-purple">Coming Soon</span></h1>
+        
+        <p>Access via the <strong>🤖</strong> icon in the dock. This feature is currently under development.</p>
+        
+        <h2>Planned Features</h2>
+        <ul>
+            <li><strong>Pre-built Agents</strong> – Browse QA automation agents built for common tasks</li>
+            <li><strong>One-Click Install</strong> – Simple installation and configuration</li>
+            <li><strong>Community Library</strong> – Community-contributed agent marketplace</li>
+            <li><strong>Custom Workflows</strong> – Integrate agents into your existing workflows</li>
+            <li><strong>AI Recommendations</strong> – Get agent suggestions based on your usage patterns</li>
+            <li><strong>Version Control</strong> – Automatic updates and version management</li>
+            <li><strong>Analytics</strong> – Track agent usage and performance</li>
+            <li><strong>Private Publishing</strong> – Publish private agents for your team</li>
+        </ul>
+        
+        <h2>Store Categories</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>🤖 AI Agents</td><td>Intelligent automation assistants</td></tr>
+                <tr><td>⚙️ Automation Tools</td><td>Task automation utilities</td></tr>
+                <tr><td>🔌 Integrations</td><td>Third-party platform connectors</td></tr>
+                <tr><td>📊 Analytics</td><td>Reporting and metrics tools</td></tr>
+                <tr><td>🧪 Test Utilities</td><td>Testing helpers and validators</td></tr>
+                <tr><td>📝 Documentation</td><td>Doc generation and management</td></tr>
+                <tr><td>🔐 Security Tools</td><td>Security testing agents</td></tr>
+                <tr><td>🎨 Theme Packs</td><td>Custom UI themes and styles</td></tr>
+            </tbody>
+        </table>
+        
+        <div class="info-box">
+            <span class="box-icon">🚀</span>
+            <div class="box-content">
+                <strong>Note</strong>
+                Extend BugWizard with powerful community-powered agents.
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section 17: API Flow Tester -->
+    <section id="api-tester">
+        <h1><span class="section-icon">🔌</span> API Flow Tester</h1>
+        
+        <p>Access via <strong>🗃️ More Tools</strong> → <strong>🧪 BugWizard API Flow Tester</strong>.</p>
+        
+        <h2>Request Composer</h2>
+        <ul>
+            <li><strong>HTTP Methods</strong> – GET, POST, PUT, PATCH, DELETE</li>
+            <li><strong>URL Input</strong> – With clear button</li>
+            <li><strong>Save Request</strong> – Save to collections</li>
+        </ul>
+        
+        <h2>Request Tabs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tab</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Params</td><td>Add query parameters with key-value pairs</td></tr>
+                <tr><td>Headers</td><td>Custom headers with autocomplete</td></tr>
+                <tr><td>Body</td><td>None, JSON, Text, XML, Form Data</td></tr>
+                <tr><td>Auth</td><td>No Auth, Bearer Token, Basic Auth, API Key</td></tr>
+                <tr><td>Latency</td><td>Run latency tests with multiple requests</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Latency Testing</h2>
+        <ul>
+            <li><strong>Request Count</strong> – 5, 10, 20, 50, or 100 requests</li>
+            <li><strong>Delay Between Requests</strong> – No delay, 100ms, 500ms, 1s, 2s</li>
+            <li><strong>Results Modal</strong> – Progress, stats (avg/min/max), chart, individual results</li>
+        </ul>
+        
+        <h2>Response Viewer</h2>
+        <ul>
+            <li>HTTP status code with color coding</li>
+            <li>Response time in milliseconds</li>
+            <li>Response body (formatted) and headers</li>
+        </ul>
+    </section>
+    
+    <!-- Section 18: History -->
+    <section id="history">
+        <h1><span class="section-icon">📜</span> History Feature</h1>
+        
+        <p>BugWizard automatically saves parsed content for later reference.</p>
+        
+        <h2>Accessing History</h2>
+        <p>Click the <strong>🗑️ History</strong> icon in the dock.</p>
+        
+        <h2>History Entry Information</h2>
+        <ul>
+            <li><strong>Title</strong> – Bug title or "Retest Report"</li>
+            <li><strong>Timestamp</strong> – When it was parsed</li>
+            <li><strong>Mode</strong> – Bug Report or Retest Report</li>
+            <li><strong>Severity</strong> and <strong>Priority</strong></li>
+        </ul>
+        
+        <h2>Actions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Button</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Checkbox</td><td>Select entry for bulk delete</td></tr>
+                <tr><td>📥 Load</td><td>Restores content to text area</td></tr>
+                <tr><td>🗑️ Delete Selected</td><td>Removes selected entries</td></tr>
+            </tbody>
+        </table>
+        
+        <h2>Storage</h2>
+        <ul>
+            <li>History is stored in browser local storage</li>
+            <li>Maximum 50 entries retained (oldest removed first)</li>
+            <li>Duplicate titles are not saved again</li>
+        </ul>
+    </section>
+    
+    <!-- Section 19: Themes -->
+    <section id="themes">
+        <h1><span class="section-icon">🎨</span> Dark Mode & Custom Themes</h1>
+        
+        <h2>Dark Mode Toggle</h2>
+        <p>Toggle between light and dark themes by clicking the <strong>🌙/☀️</strong> icon in the dock:</p>
+        <ul>
+            <li>🌛 Moon = Currently in light mode, click to switch to dark</li>
+            <li>🌞 Sun = Currently in dark mode, click to switch to light</li>
+        </ul>
+        
+        <h2>Custom Themes</h2>
+        <p>Access 16 custom themes via <strong>⚙️ Settings</strong> → <strong>🎨 Custom Themes</strong>:</p>
+        <p>Purple Magic, Ocean Blue, Forest Green, Sunset Orange, Rose Pink, Golden Glow, Crimson Red, Cyber Cyan, Neon Lime, Deep Violet, Teal Wave, Coral Reef, Indigo Night, Amber Glow, Mint Fresh, and Rainbow.</p>
+        
+        <h2>Theme Persistence</h2>
+        <p>Your preferences are saved to local storage and restored on page reload.</p>
+    </section>
+    
+    <!-- Section 20: Keyboard Shortcuts -->
+    <section id="shortcuts">
+        <h1><span class="section-icon">⌨️</span> Keyboard Shortcuts & Tips</h1>
+        
+        <h2>Keyboard Shortcuts</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>Context</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><kbd>Alt</kbd>+<kbd>T</kbd></td>
+                    <td>Global</td>
+                    <td>Open Terminal</td>
+                </tr>
+                <tr>
+                    <td><kbd>Cmd</kbd>+<kbd>T</kbd></td>
+                    <td>Mac</td>
+                    <td>Open Terminal</td>
+                </tr>
+                <tr>
+                    <td><kbd>Enter</kbd></td>
+                    <td>Various inputs</td>
+                    <td>Submit/Confirm action</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Best Practices</h2>
+        <ol>
+            <li><strong>Install dependencies first</strong> – Run <code>heyo install bugwizard dependencies</code> in Terminal</li>
+            <li><strong>Configure PAT first</strong> – Required for duplicate detection and retest submission</li>
+            <li><strong>Set up your profile</strong> – Enables personalized greetings</li>
+            <li><strong>Use the Report Generator</strong> – Ensures proper markdown format</li>
+            <li><strong>Check for duplicates</strong> – Avoid creating duplicate bugs</li>
+            <li><strong>Review parsed data</strong> – Verify extracted information before submission</li>
+            <li><strong>Compress large videos</strong> – Use the built-in compressor for files over 30MB</li>
+            <li><strong>Use History</strong> – Reload previous content instead of re-parsing</li>
+        </ol>
+        
+        <h2>Pro Tips</h2>
+        <ul>
+            <li>Click outside modals to close them</li>
+            <li>Minimize modals to keep them accessible while working</li>
+            <li>Hover over dock items to see tooltips</li>
+            <li>Check the debug output for raw parsed values when troubleshooting</li>
+            <li>ADO Login Reminder appears every 60 minutes</li>
+        </ul>
+    </section>
+    
+    <!-- Section 21: Troubleshooting -->
+    <section id="troubleshooting">
+        <h1><span class="section-icon">🔧</span> Troubleshooting</h1>
+        
+        <h2>Common Issues</h2>
+        
+        <h3>"Access Code Invalid" Error</h3>
+        <div class="warning-box">
+            <span class="box-icon">❌</span>
+            <div class="box-content">
+                <strong>Cause:</strong> Incorrect access code format or invalid code entered.<br>
+                <strong>Solution:</strong> Verify the access code is exactly 8 characters. Trial codes start with <code>TLBW</code> (e.g., <code>TLBWA7K9</code>). License codes start with <code>PLBW</code> (e.g., <code>PLBWA7K9</code>). Contact the developer for a valid trial or license code.
+            </div>
+        </div>
+        
+        <h3>"Invalid Code or Expired" Error</h3>
+        <div class="warning-box">
+            <span class="box-icon">⏰</span>
+            <div class="box-content">
+                <strong>Cause:</strong> Trial code has expired (trial period is 3 days).<br>
+                <strong>Solution:</strong> Request a new trial code from the developer, or purchase a license code for permanent access.
+            </div>
+        </div>
+        
+        <h3>"PAT Token not configured" Error</h3>
+        <div class="warning-box">
+            <span class="box-icon">🔑</span>
+            <div class="box-content">
+                <strong>Cause:</strong> PAT token is not saved in settings.<br>
+                <strong>Solution:</strong> Go to Settings → API Authentication, enter your PAT token, click "💾 Save Token".
+            </div>
+        </div>
+        
+        <h3>Parse button is disabled</h3>
+        <div class="warning-box">
+            <span class="box-icon">⚠️</span>
+            <div class="box-content">
+                <strong>Cause:</strong> Required fields not selected.<br>
+                <strong>Solution:</strong> Ensure you've selected Issue Type, Application, and Market (if required).
+            </div>
+        </div>
+        
+        <h3>Duplicate detection returns no results</h3>
+        <p><strong>Possible causes:</strong></p>
+        <ul>
+            <li>Keywords from title are too common</li>
+            <li>No matching bugs in your configured project</li>
+            <li>PAT token lacks read permissions</li>
+            <li>Network connectivity issues</li>
+        </ul>
+        <p><strong>Solution:</strong> Check browser console (F12) for API errors. Verify PAT has Work Items Read scope.</p>
+        
+        <h3>Retest comment submission fails</h3>
+        <p><strong>Solution:</strong> Verify PAT permissions include "Work Items - Read & Write". Confirm the Bug ID exists and you have access.</p>
+        
+        <h3>Video compression fails</h3>
+        <p><strong>Solution:</strong> Use a supported format (MP4, WebM, MOV, AVI). Try a smaller video file. Use Chrome or Edge for best compatibility.</p>
+        
+        <h3>Ozzy AI says "API key required"</h3>
+        <p><strong>Solution:</strong> Select an AI provider, enter your API key, click "🚀 Connect".</p>
+        
+        <h3>AI Training Data not loading</h3>
+        <div class="warning-box">
+            <span class="box-icon">📄</span>
+            <div class="box-content">
+                <strong>Possible causes:</strong> File format not supported (must be .md or .json), file is empty or corrupted, browser localStorage is full.<br>
+                <strong>Solution:</strong> Verify file has .md or .json extension. Check file contains valid content. Try clearing browser cache if localStorage is full.
+            </div>
+        </div>
+        
+        <h3>AI responses don't reflect training data</h3>
+        <div class="warning-box">
+            <span class="box-icon">🧠</span>
+            <div class="box-content">
+                <strong>Possible causes:</strong> Training data was not uploaded correctly, training data was cleared, API key expired or invalid.<br>
+                <strong>Solution:</strong> Check sidebar for 🧠 icon with filename. Re-upload training data if not showing. Verify API key is still connected.
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h2>Getting Help</h2>
+        <ul>
+            <li>Click the <strong>ℹ️ Help</strong> button in the dock for quick tips</li>
+            <li>Check the browser console (F12 → Console) for error details</li>
+            <li>Contact the developer via the <strong>📧 Contact</strong> button</li>
+            <li>Review the "How to Use BugWizard" section on the main page</li>
+        </ul>
+    </section>
+    
+    <!-- Technical Details -->
+    <section>
+        <h1><span class="section-icon">🔬</span> Technical Details</h1>
+        
+        <h2>Technologies Used</h2>
+        
+        <h3>Frontend</h3>
+        <ul>
+            <li>HTML5</li>
+            <li>CSS3 (Glassmorphism, animations, custom themes)</li>
+            <li>JavaScript ES2024</li>
+            <li>Web Crypto API (SHA-256 password hashing)</li>
+            <li>Web Speech API (Voice-to-Text recognition)</li>
+            <li>Fetch API (REST calls)</li>
+            <li>LocalStorage / SessionStorage</li>
+        </ul>
+        
+        <h3>Libraries</h3>
+        <ul>
+            <li>Chart.js 4.4.1 (Activity charts, latency visualization)</li>
+            <li>Marked.js (Markdown parsing)</li>
+            <li>SheetJS (xlsx-0.20.1) – Excel/CSV parsing</li>
+            <li>jsPDF 2.5.1 (PDF generation)</li>
+            <li>html2canvas 1.4.1 (Chart capture for PDF)</li>
+            <li>Lottie (bodymovin 5.12.2) – Animated icons and transitions</li>
+        </ul>
+        
+        <h3>Integrations</h3>
+        <ul>
+            <li>Azure DevOps REST API</li>
+            <li>JIRA REST API (Atlassian)</li>
+            <li>Multiple AI Providers (Groq, OpenRouter, Gemini, OpenAI, Claude, Grok, Azure, DeepSeek, Qwen, GLM)</li>
+            <li>Service Worker (PWA offline support)</li>
+        </ul>
+    </section>
+    
+    <!-- Footer -->
+    <div class="manual-footer">
+        <div class="logo">🪄</div>
+        <p><strong>BugWizard</strong> v1.0 "Whisker Wizard"</p>
+        <p>Developed with 💗 and some pinch 🤏 of Magic 🔮🪄 by <strong>Abdul Talib</strong></p>
+        <p>Technologies: HTML5 • CSS3 • JavaScript ES2024 • Web Crypto API • Web Speech API • Azure DevOps • JIRA • Chart.js • Lottie • PWA</p>
+        <p style="margin-top: 20px;">© 2026 BugWizard - India</p>
+        <p style="margin-top: 10px; font-style: italic;">For feature requests or bug reports, please use the Contact option in the application dock.</p>
+    </div>
+    
+    <script>
+        // Add smooth scrolling for TOC links
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
