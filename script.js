@@ -579,6 +579,150 @@ function updateWaitlistCount(additionalCount = 0) {
 // ========================================
 let exitPopupShown = false;
 
+// Testimonials Auto-Sliding Carousel
+function initTestimonialsCarousel() {
+    const track = document.getElementById('testimonialsTrack');
+    const carousel = document.getElementById('testimonialsCarousel');
+    const prevBtn = document.getElementById('testimonialPrev');
+    const nextBtn = document.getElementById('testimonialNext');
+    const dotsContainer = document.getElementById('testimonialDots');
+    if (!track || !prevBtn || !nextBtn || !dotsContainer || !carousel) return;
+
+    const cards = track.querySelectorAll('.testimonial-card');
+    const totalCards = cards.length;
+    let currentIndex = 0;
+    let autoSlideInterval;
+    let cardsPerView = getCardsPerView();
+
+    function getCardsPerView() {
+        if (window.innerWidth <= 640) return 1;
+        if (window.innerWidth <= 1024) return 2;
+        return 3;
+    }
+
+    function setCardWidths() {
+        const containerWidth = carousel.offsetWidth;
+        const cardMargin = window.innerWidth <= 768 ? 16 : 24; // margin: 0 12px = 24px total, 0 8px = 16px
+        const cardWidth = (containerWidth / cardsPerView) - cardMargin;
+        cards.forEach(function(card) {
+            card.style.width = cardWidth + 'px';
+            card.style.minWidth = cardWidth + 'px';
+        });
+    }
+
+    function buildDots() {
+        dotsContainer.innerHTML = '';
+        var pages = Math.ceil(totalCards / cardsPerView);
+        for (var i = 0; i < pages; i++) {
+            var dot = document.createElement('button');
+            dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+            (function(idx) {
+                dot.addEventListener('click', function() { goToSlide(idx); });
+            })(i);
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function updateDots() {
+        var dots = dotsContainer.querySelectorAll('.testimonial-dot');
+        var pageIndex = Math.floor(currentIndex / cardsPerView);
+        dots.forEach(function(d, i) {
+            d.classList.toggle('active', i === pageIndex);
+        });
+    }
+
+    function goToSlide(pageIndex) {
+        var maxIndex = totalCards - cardsPerView;
+        currentIndex = Math.min(pageIndex * cardsPerView, maxIndex);
+        if (currentIndex < 0) currentIndex = 0;
+        updatePosition();
+        updateDots();
+        resetAutoSlide();
+    }
+
+    function updatePosition() {
+        if (!cards[0]) return;
+        var card = cards[0];
+        var style = window.getComputedStyle(card);
+        var marginLeft = parseFloat(style.marginLeft) || 0;
+        var marginRight = parseFloat(style.marginRight) || 0;
+        var cardFullWidth = card.offsetWidth + marginLeft + marginRight;
+        track.style.transform = 'translateX(-' + (currentIndex * cardFullWidth) + 'px)';
+    }
+
+    function next() {
+        var maxIndex = totalCards - cardsPerView;
+        if (currentIndex >= maxIndex) {
+            currentIndex = 0;
+        } else {
+            currentIndex++;
+        }
+        updatePosition();
+        updateDots();
+    }
+
+    function prev() {
+        var maxIndex = totalCards - cardsPerView;
+        if (currentIndex <= 0) {
+            currentIndex = maxIndex;
+        } else {
+            currentIndex--;
+        }
+        updatePosition();
+        updateDots();
+    }
+
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(next, 5000);
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+
+    nextBtn.addEventListener('click', function() { next(); resetAutoSlide(); });
+    prevBtn.addEventListener('click', function() { prev(); resetAutoSlide(); });
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', function() { clearInterval(autoSlideInterval); });
+    carousel.addEventListener('mouseleave', function() { startAutoSlide(); });
+
+    // Touch/swipe support
+    var touchStartX = 0;
+    track.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+        clearInterval(autoSlideInterval);
+    }, { passive: true });
+    track.addEventListener('touchend', function(e) {
+        var touchEndX = e.changedTouches[0].screenX;
+        var diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) next(); else prev();
+        }
+        startAutoSlide();
+    }, { passive: true });
+
+    // Handle resize
+    var resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            var newPerView = getCardsPerView();
+            cardsPerView = newPerView;
+            currentIndex = 0;
+            setCardWidths();
+            buildDots();
+            updatePosition();
+        }, 150);
+    });
+
+    setCardWidths();
+    buildDots();
+    startAutoSlide();
+}
+
 function initExitPopup() {
     // Check if already shown in this session
     if (sessionStorage.getItem('exitPopupShown')) return;
@@ -670,6 +814,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initWaitlistForm();
     initExitPopup();
     updateWaitlistCount();
+    initTestimonialsCarousel();
     
     // Add more elements to scroll animations
     const additionalAnimElements = document.querySelectorAll(
