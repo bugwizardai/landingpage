@@ -252,8 +252,10 @@ ul {
 
 .logo-img {
     height: 32px;
-    width: auto;
+    width: 32px;
     vertical-align: middle;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
 }
 
 .nav-links {
@@ -420,8 +422,10 @@ ul {
 
 .hero-logo-img {
     height: clamp(48px, 6vw, 72px);
-    width: auto;
+    width: clamp(48px, 6vw, 72px);
     vertical-align: middle;
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
 }
 
 .hero-subtitle {
@@ -1127,6 +1131,119 @@ ul {
     font-size: 0.7rem;
     padding: 4px 8px;
     border-radius: 20px;
+}
+
+/* ========================================
+   More Power Tools Section
+   ======================================== */
+.power-tools-section {
+    background: var(--bg-primary);
+}
+
+.power-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .power-tools-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.power-tool-card {
+    display: flex;
+    gap: 20px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    transition: all var(--transition-normal);
+}
+
+.power-tool-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-glow);
+}
+
+.power-tool-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: var(--radius-md);
+}
+
+.power-tool-info h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.power-tool-info > p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.power-tool-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+}
+
+.power-tool-features li {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    position: relative;
+    padding-left: 16px;
+}
+
+.power-tool-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.power-tool-extras .power-tool-features {
+    grid-template-columns: 1fr;
+}
+
+.power-tool-extras .power-tool-features li {
+    padding-left: 0;
+}
+
+.power-tool-extras .power-tool-features li::before {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .power-tool-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 22px;
+    }
+
+    .power-tool-features {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ========================================
@@ -3441,7 +3558,9 @@ ul {
 
 .popup-logo-img {
     height: 64px;
-    width: auto;
+    width: 64px;
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
 }
 
 .exit-popup-content h3 {
