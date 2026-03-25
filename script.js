@@ -460,6 +460,7 @@ document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
 function initCurrencyToggle() {
     const currencyBtns = document.querySelectorAll('.currency-btn');
     const priceElements = document.querySelectorAll('.price-amount[data-inr], .free-trial-price[data-inr]');
+    const monthlyEquivElements = document.querySelectorAll('.pricing-monthly-equiv[data-inr]');
 
     currencyBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -470,6 +471,11 @@ function initCurrencyToggle() {
             // Update prices
             const currency = btn.dataset.currency;
             priceElements.forEach(el => {
+                el.textContent = el.dataset[currency];
+            });
+
+            // Update monthly equivalent labels
+            monthlyEquivElements.forEach(el => {
                 el.textContent = el.dataset[currency];
             });
 
