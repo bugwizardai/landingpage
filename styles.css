@@ -1124,6 +1124,26 @@ ul {
     color: #8b5cf6;
 }
 
+/* ========================================
+   Plugin Store Section
+   ======================================== */
+.plugin-store-section {
+    background: linear-gradient(180deg, #0d0d1a 0%, #111128 50%, #0a0a0f 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.plugin-store-section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: 0;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
 /* Coming Soon Badge for Feature Cards */
 .feature-badge.coming-soon-badge {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
