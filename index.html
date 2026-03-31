@@ -149,7 +149,7 @@
             <!-- Waitlist Counter -->
             <div class="waitlist-counter">
                 <span class="counter-icon">🚀</span>
-                <span class="counter-text">Join <strong id="waitlist-count">11850</strong>+ QA engineers on the waitlist</span>
+                <span class="counter-text">Join <strong id="waitlist-count">1270</strong>+ QA engineers on the waitlist</span>
             </div>
 
             <!-- Launch Countdown Timer -->
@@ -2301,6 +2301,42 @@
         </div>
     </footer>
 
+    <!-- Ask AI Floating Button -->
+    <div id="askAIBtn" class="ask-ai-widget" title="Ask AI about BugWizard">
+        <span class="ask-ai-icon">✨</span>
+        <span class="ask-ai-text">Ask AI</span>
+    </div>
+
+    <!-- Ask AI Chatbot Panel -->
+    <div id="askAIChatPanel" class="ask-ai-chat-panel hidden">
+        <div class="ask-ai-chat-header">
+            <div class="ask-ai-header-left">
+                <button class="mac-close-btn" id="askAIChatClose" title="Close"></button>
+                <button class="ask-ai-clear-btn" id="askAIChatClear" title="Clear chat">🗑️</button>
+            </div>
+            <div class="ask-ai-chat-title">
+                <span>✨</span>
+                <span>BugWizard AI Guide</span>
+            </div>
+        </div>
+        <div class="ask-ai-chat-messages" id="askAIChatMessages">
+            <div class="ask-ai-msg bot">
+                <div class="ask-ai-msg-avatar">🧙‍♂️</div>
+                <div class="ask-ai-msg-bubble">Hi! I'm the BugWizard Guide. Ask me anything about BugWizard — features, pricing, device farm, setup, and more!</div>
+            </div>
+        </div>
+        <div class="ask-ai-chat-suggestions" id="askAIChatSuggestions">
+            <button class="ask-ai-suggestion" data-q="What is BugWizard AI?">🪄 What is BugWizard?</button>
+            <button class="ask-ai-suggestion" data-q="What features does BugWizard have?">🚀 Features</button>
+            <button class="ask-ai-suggestion" data-q="How does Ozzy Device Farm work?">📱 Device Farm</button>
+            <button class="ask-ai-suggestion" data-q="What are the pricing plans?">💰 Pricing</button>
+        </div>
+        <div class="ask-ai-chat-input-area">
+            <input type="text" id="askAIChatInput" class="ask-ai-chat-input" placeholder="Ask anything about BugWizard..." autocomplete="off">
+            <button id="askAIChatSend" class="ask-ai-chat-send" title="Send">➤</button>
+        </div>
+    </div>
+
     <!-- Exit Intent Popup -->
     <div class="exit-popup" id="exit-popup">
         <div class="exit-popup-content">
@@ -2387,9 +2423,9 @@
 
     <script src="script.js"></script>
     <script>
-        // Launch Countdown Timer — April 1, 2026
+        // Launch Countdown Timer — April 10, 2026
         (function() {
-            const lcLaunchDate = new Date('2026-04-01T00:00:00');
+            const lcLaunchDate = new Date('2026-04-10T00:00:00');
             function lcUpdate() {
                 const now = new Date();
                 const diff = lcLaunchDate - now;
@@ -2551,7 +2587,7 @@
                 // Increment waitlist counter
                 const counterEl = document.getElementById('waitlist-count');
                 if (counterEl) {
-                    const current = parseInt(counterEl.textContent, 10) || 11850;
+                    const current = parseInt(counterEl.textContent, 10) || 1270;
                     counterEl.textContent = current + 1;
                 }
 
@@ -2576,6 +2612,456 @@
             // First notification after 8-15 seconds
             setTimeout(showNotification, 8000 + Math.floor(Math.random() * 7000));
         })();
+    </script>
+
+    <!-- Ask AI Chatbot Styles -->
+    <style>
+        .ask-ai-widget {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 22px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.4), 0 0 40px rgba(139, 92, 246, 0.15);
+            transition: all 0.3s ease;
+            animation: askAiPulse 2s ease-in-out infinite;
+        }
+        .ask-ai-widget:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 32px rgba(99, 102, 241, 0.5), 0 0 50px rgba(139, 92, 246, 0.25);
+        }
+        .ask-ai-widget .ask-ai-icon { font-size: 18px; }
+        .ask-ai-widget .ask-ai-text { font-family: 'Inter', sans-serif; }
+        @keyframes askAiPulse {
+            0%, 100% { box-shadow: 0 4px 24px rgba(99, 102, 241, 0.4), 0 0 40px rgba(139, 92, 246, 0.15); }
+            50% { box-shadow: 0 4px 32px rgba(99, 102, 241, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
+        }
+
+        .ask-ai-chat-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 28px;
+            width: 380px;
+            height: 500px;
+            max-height: 500px;
+            background: rgba(15, 15, 35, 0.97);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 18px;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            overflow: hidden;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .ask-ai-chat-panel.hidden {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            display: flex !important;
+            visibility: hidden;
+        }
+
+        .ask-ai-chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(99, 102, 241, 0.08);
+        }
+        .ask-ai-chat-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e0ff;
+        }
+        .ask-ai-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ask-ai-clear-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            padding: 2px;
+        }
+        .ask-ai-clear-btn:hover { opacity: 1; }
+
+        .ask-ai-chat-header .mac-close-btn {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: none;
+            background: #ff5f57;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .ask-ai-chat-header .mac-close-btn::before,
+        .ask-ai-chat-header .mac-close-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 1.5px;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.2s;
+        }
+        .ask-ai-chat-header .mac-close-btn::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .ask-ai-chat-header .mac-close-btn::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        .ask-ai-chat-header .mac-close-btn:hover {
+            background: #ff3b30;
+        }
+        .ask-ai-chat-header .mac-close-btn:hover::before,
+        .ask-ai-chat-header .mac-close-btn:hover::after {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .ask-ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 280px;
+            max-height: 420px;
+        }
+        .ask-ai-msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .ask-ai-msg.user {
+            flex-direction: row-reverse;
+        }
+        .ask-ai-msg-avatar {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .ask-ai-msg-bubble {
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #d4d4ff;
+            max-width: 80%;
+            word-break: break-word;
+        }
+        .ask-ai-msg.user .ask-ai-msg-bubble {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.25);
+        }
+        .ask-ai-typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 4px 0;
+        }
+        .ask-ai-typing-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #818cf8;
+            animation: askAiDot 1.2s infinite;
+        }
+        .ask-ai-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .ask-ai-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes askAiDot {
+            0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .ask-ai-chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .ask-ai-suggestion {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 11.5px;
+            color: #a5b4fc;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .ask-ai-suggestion:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #c7d2fe;
+        }
+
+        .ask-ai-chat-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .ask-ai-chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #e0e0ff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .ask-ai-chat-input:focus {
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        .ask-ai-chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .ask-ai-chat-send {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .ask-ai-chat-send:hover {
+            transform: scale(1.08);
+            box-shadow: 0 2px 12px rgba(99, 102, 241, 0.4);
+        }
+        .ask-ai-chat-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 480px) {
+            .ask-ai-widget {
+                bottom: 16px;
+                right: 16px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            .ask-ai-chat-panel {
+                right: 8px;
+                left: 8px;
+                bottom: 80px;
+                width: auto;
+            }
+        }
+    </style>
+
+    <!-- Ask AI Chatbot Script -->
+    <script>
+    (function initAskAIChatbot() {
+        const askAIBtn = document.getElementById('askAIBtn');
+        const chatPanel = document.getElementById('askAIChatPanel');
+        const chatClose = document.getElementById('askAIChatClose');
+        const chatClear = document.getElementById('askAIChatClear');
+        const chatMessages = document.getElementById('askAIChatMessages');
+        const chatInput = document.getElementById('askAIChatInput');
+        const chatSend = document.getElementById('askAIChatSend');
+        const suggestions = document.getElementById('askAIChatSuggestions');
+
+        if (!askAIBtn || !chatPanel) return;
+
+        const SYSTEM_PROMPT = `You are the BugWizard AI Guide — a friendly, concise assistant on the BugWizard landing page. Help visitors understand BugWizard AI, its features, pricing, and answer questions.
+
+Key info:
+- **BugWizard AI** is an AI-powered QA Operating System for Azure DevOps & JIRA.
+- **Features**: Bug Report Generator, Retest Automator, Ozzy Device Farm (50+ cloud devices), Ozzy AI Assistant, Duplicate Detector, Video Compressor, API Flow Tester, Test Case Optimizer, Test Case Generator, Plugin Store, Agentron Store, Terminal, Custom Themes, Dark Mode, and more.
+- **AI Providers**: Supports 10+ AI providers including Groq, OpenRouter, OpenAI, Gemini, Claude, DeepSeek, Qwen, Kimi, and xAI Grok.
+- **Platforms**: Azure DevOps and JIRA.
+- **Ozzy Device Farm**: Cloud-based device testing with 50+ real iOS and Android devices — iPhones, iPads, Samsung, Pixel, etc. No physical devices needed. Test responsive design, log bugs while testing, capture screenshots.
+- **Security**: All data stays in the browser. No server, no backend. PAT tokens stored in localStorage only. Direct HTTPS calls to Microsoft/Atlassian.
+- **Pricing**: Monthly ($12/mo), Yearly ($99/yr - save 31%), Unlimited License ($249 one-time), Enterprise (custom). 3-day free trial available.
+- **Waitlist**: Users can join the waitlist for early access.
+- **CEO & Founder**: Abdul Talib — an AI-Driven SDET who built BugWizard AI. If anyone asks who is the CEO, founder, creator, or who built BugWizard, always answer "Abdul Talib".
+- **Launch**: Coming soon — users can join the waitlist or request demo access.
+
+Keep answers short (2-4 sentences). Be enthusiastic about the product. Use emojis sparingly.`;
+
+        let chatHistory = [];
+
+        function addMessage(text, role) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'ask-ai-msg ' + role;
+            const avatar = role === 'bot' ? '🧙‍♂️' : '👤';
+            msgDiv.innerHTML = '<div class="ask-ai-msg-avatar">' + avatar + '</div><div class="ask-ai-msg-bubble">' + escapeHTML(text) + '</div>';
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'ask-ai-msg bot';
+            msgDiv.id = 'askAiTyping';
+            msgDiv.innerHTML = '<div class="ask-ai-msg-avatar">🧙‍♂️</div><div class="ask-ai-msg-bubble"><div class="ask-ai-typing-dots"><span></span><span></span><span></span></div></div>';
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('askAiTyping');
+            if (el) el.remove();
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function _bwDec() {
+            var _e = 'anZuYmdydWpwSXx1R0xFaGVJZzx5U1U2WkpnfGU2SVw4eEZGSllJZFNlNnZMXWszMzVST25cR2Q=';
+            var _d = atob(_e);
+            return Array.from(_d).map(function(c) { return String.fromCharCode(c.charCodeAt(0) - 3); }).join('');
+        }
+
+        async function sendMessage(text) {
+            if (!text.trim()) return;
+            addMessage(text, 'user');
+            chatInput.value = '';
+            chatSend.disabled = true;
+            if (suggestions) suggestions.style.display = 'none';
+
+            chatHistory.push({ role: 'user', content: text });
+            addTypingIndicator();
+
+            try {
+                const messages = [
+                    { role: 'system', content: SYSTEM_PROMPT },
+                    ...chatHistory.slice(-10)
+                ];
+                const response = await askAIChatCall(messages);
+                removeTypingIndicator();
+                chatHistory.push({ role: 'assistant', content: response });
+                addMessage(response, 'bot');
+            } catch (err) {
+                removeTypingIndicator();
+                addMessage('Sorry, I couldn\'t get a response right now. Please try again later.', 'bot');
+                console.error('Ask AI Chat error:', err);
+            }
+            chatSend.disabled = false;
+            chatInput.focus();
+        }
+
+        async function askAIChatCall(messages) {
+            var _k = _bwDec();
+            const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + _k
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    messages: messages,
+                    temperature: 0.7,
+                    max_tokens: 1024
+                })
+            });
+            var _k = undefined;
+            const data = await resp.json();
+            if (data.error) throw new Error(data.error.message || 'AI service error');
+            return data.choices?.[0]?.message?.content || 'No response received.';
+        }
+
+        // Toggle panel
+        askAIBtn.addEventListener('click', function() {
+            chatPanel.classList.toggle('hidden');
+            if (!chatPanel.classList.contains('hidden')) {
+                chatInput.focus();
+            }
+        });
+
+        // Close panel
+        chatClose.addEventListener('click', function() {
+            chatPanel.classList.add('hidden');
+        });
+
+        // Clear chat
+        if (chatClear) {
+            chatClear.addEventListener('click', function() {
+                chatHistory = [];
+                chatMessages.innerHTML = '';
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'ask-ai-msg bot';
+                welcomeDiv.innerHTML = '<div class="ask-ai-msg-avatar">🧙‍♂️</div><div class="ask-ai-msg-bubble">Hi! I\'m the BugWizard Guide. Ask me anything about BugWizard — features, pricing, device farm, setup, and more!</div>';
+                chatMessages.appendChild(welcomeDiv);
+                if (suggestions) suggestions.style.display = '';
+            });
+        }
+
+        // Send on button click
+        chatSend.addEventListener('click', function() {
+            sendMessage(chatInput.value);
+        });
+
+        // Send on Enter
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage(chatInput.value);
+            }
+        });
+
+        // Suggestion buttons
+        if (suggestions) {
+            suggestions.addEventListener('click', function(e) {
+                const btn = e.target.closest('.ask-ai-suggestion');
+                if (btn) {
+                    sendMessage(btn.dataset.q);
+                }
+            });
+        }
+
+        // Close on outside click
+        document.addEventListener('click', function(e) {
+            if (!chatPanel.classList.contains('hidden') &&
+                !chatPanel.contains(e.target) &&
+                !askAIBtn.contains(e.target)) {
+                chatPanel.classList.add('hidden');
+            }
+        });
+    })();
     </script>
 </body>
 </html>
