@@ -1,845 +1,547 @@
 // ========================================
-// BugWizard AI Landing Page JavaScript
+// BugWizard AI — Landing Page JS (Redesign)
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initMobileMenu();
-    initParticles();
-    init3DScene();
-    initScrollAnimations();
+    initScrollReveal();
     initSmoothScroll();
+    initCountdown();
+    initCurrencyToggle();
+    initWaitlistForm();
+    initTestimonialsCarousel();
+    initFAQ();
+    initExitPopup();
+    initSocialProof();
+    initAskAI();
+    initOfflineBanner();
+    updateWaitlistCount();
 });
 
 // ========================================
-// Navbar Scroll Effect
+// Navbar
 // ========================================
 function initNavbar() {
-    const navbar = document.querySelector('.navbar');
-    let lastScroll = 0;
-
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
     window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-
-        // Add scrolled class when scrolling down
-        if (currentScroll > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-
-        lastScroll = currentScroll;
-    });
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
 }
 
 // ========================================
-// Mobile Menu Toggle
+// Mobile Menu
 // ========================================
 function initMobileMenu() {
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const mobileLinks = document.querySelectorAll('.mobile-menu a');
+    const toggle = document.getElementById('mobileToggle');
+    const menu = document.getElementById('mobileMenu');
+    if (!toggle || !menu) return;
 
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => {
-            menuBtn.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
-        });
-
-        // Close menu when clicking a link
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                menuBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                menuBtn.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            }
-        });
-    }
-}
-
-// ========================================
-// Particle Animation
-// ========================================
-function initParticles() {
-    const particlesContainer = document.getElementById('particles');
-    if (!particlesContainer) return;
-
-    const particleCount = 30;
-
-    for (let i = 0; i < particleCount; i++) {
-        createParticle(particlesContainer);
-    }
-}
-
-function createParticle(container) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-
-    // Random position
-    particle.style.left = Math.random() * 100 + '%';
-    particle.style.top = Math.random() * 100 + '%';
-
-    // Random size
-    const size = Math.random() * 4 + 2;
-    particle.style.width = size + 'px';
-    particle.style.height = size + 'px';
-
-    // Random animation delay
-    particle.style.animationDelay = Math.random() * 20 + 's';
-    particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-
-    // Random opacity
-    particle.style.opacity = Math.random() * 0.5 + 0.2;
-
-    container.appendChild(particle);
-}
-
-// ========================================
-// 3D Scene with Mouse Parallax
-// ========================================
-function init3DScene() {
-    const scene = document.getElementById('scene3d');
-    if (!scene) return;
-    
-    const shapes = scene.querySelectorAll('.shape-3d');
-    let mouseX = 0;
-    let mouseY = 0;
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-    
-    // Track mouse position
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX - windowWidth / 2) / windowWidth;
-        mouseY = (e.clientY - windowHeight / 2) / windowHeight;
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        menu.classList.toggle('active');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
     });
-    
-    // Update window dimensions on resize
-    window.addEventListener('resize', () => {
-        windowWidth = window.innerWidth;
-        windowHeight = window.innerHeight;
-    });
-    
-    // Parallax animation loop
-    function animateParallax() {
-        shapes.forEach(shape => {
-            const speed = parseFloat(shape.dataset.speed) || 0.02;
-            const rotateX = mouseY * 30 * speed * 10;
-            const rotateY = mouseX * 30 * speed * 10;
-            const translateX = mouseX * 50 * speed * 10;
-            const translateY = mouseY * 50 * speed * 10;
-            
-            // Get current transform and add parallax
-            const currentTransform = getComputedStyle(shape).transform;
-            
-            // Apply additional parallax transform
-            shape.style.setProperty('--parallax-x', `${translateX}px`);
-            shape.style.setProperty('--parallax-y', `${translateY}px`);
-            shape.style.setProperty('--parallax-rotate-x', `${rotateX}deg`);
-            shape.style.setProperty('--parallax-rotate-y', `${rotateY}deg`);
-        });
-        
-        requestAnimationFrame(animateParallax);
-    }
-    
-    // Start parallax animation
-    animateParallax();
-    
-    // Add depth effect on scroll
-    let scrollY = 0;
-    window.addEventListener('scroll', () => {
-        scrollY = window.pageYOffset;
-        const scrollProgress = scrollY / (document.body.scrollHeight - windowHeight);
-        
-        shapes.forEach((shape, index) => {
-            const depth = (index % 3) + 1;
-            const translateZ = scrollProgress * 100 * depth;
-            const opacity = Math.max(0.3, 1 - scrollProgress * 1.5);
-            
-            shape.style.opacity = opacity;
+
+    menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            toggle.classList.remove('active');
+            menu.classList.remove('active');
+            document.body.style.overflow = '';
         });
     });
-    
-    // Add floating animation variation
-    shapes.forEach((shape, index) => {
-        // Add slight random delay to create more organic movement
-        const delay = (index * 0.5) % 5;
-        shape.style.animationDelay = `${delay}s`;
+
+    document.addEventListener('click', (e) => {
+        if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+            toggle.classList.remove('active');
+            menu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     });
 }
 
 // ========================================
-// Scroll Animations
+// Scroll Reveal
 // ========================================
-function initScrollAnimations() {
-    // Add animate-on-scroll class to elements
-    const animatedElements = document.querySelectorAll(
-        '.problem-card, .step, .feature-card, .role-card, .security-card, .comparison-card, .df-feature-card, .device-farm-hero'
-    );
-
-    animatedElements.forEach(el => {
-        el.classList.add('animate-on-scroll');
-    });
-
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+function initScrollReveal() {
+    const reveals = document.querySelectorAll('.reveal');
+    if (!reveals.length) return;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: unobserve after animation
-                // observer.unobserve(entry.target);
+                observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-    animatedElements.forEach(el => {
-        observer.observe(el);
-    });
-
-    // Staggered animations for grids
-    const grids = document.querySelectorAll(
-        '.problem-grid, .features-grid, .roles-grid, .security-grid, .providers-grid, .device-farm-features-grid, .device-farm-stats'
-    );
-
-    grids.forEach(grid => {
-        const items = grid.children;
-        Array.from(items).forEach((item, index) => {
-            item.style.transitionDelay = (index * 0.1) + 's';
-        });
-    });
+    reveals.forEach(el => observer.observe(el));
 }
 
 // ========================================
-// Smooth Scrolling
+// Smooth Scroll
 // ========================================
 function initSmoothScroll() {
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (href === '#') return;
-
-            const target = document.querySelector(href);
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const id = anchor.getAttribute('href');
+            if (id === '#') return;
+            const target = document.querySelector(id);
             if (target) {
                 e.preventDefault();
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     });
 }
 
 // ========================================
-// Typing Animation (Optional)
+// Countdown Timer — April 30, 2026
 // ========================================
-function initTypingAnimation() {
-    const typingElements = document.querySelectorAll('[data-typing]');
+function initCountdown() {
+    const launchDate = new Date('2026-04-30T00:00:00');
+    const daysEl = document.getElementById('lc-days');
+    const hoursEl = document.getElementById('lc-hours');
+    const minEl = document.getElementById('lc-minutes');
+    const secEl = document.getElementById('lc-seconds');
+    if (!daysEl) return;
 
-    typingElements.forEach(el => {
-        const text = el.getAttribute('data-typing');
-        el.textContent = '';
-        let i = 0;
-
-        function type() {
-            if (i < text.length) {
-                el.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, 50);
-            }
+    function update() {
+        const now = new Date();
+        const diff = launchDate - now;
+        if (diff <= 0) {
+            daysEl.textContent = '00';
+            hoursEl.textContent = '00';
+            minEl.textContent = '00';
+            secEl.textContent = '00';
+            return;
         }
-
-        // Start typing when element is in view
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                type();
-                observer.disconnect();
-            }
-        });
-
-        observer.observe(el);
-    });
-}
-
-// ========================================
-// Counter Animation
-// ========================================
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    const suffix = element.getAttribute('data-suffix') || '';
-
-    function updateCounter() {
-        start += increment;
-        if (start < target) {
-            element.textContent = Math.floor(start) + suffix;
-            requestAnimationFrame(updateCounter);
-        } else {
-            element.textContent = target + suffix;
-        }
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        daysEl.textContent = String(d).padStart(2, '0');
+        hoursEl.textContent = String(h).padStart(2, '0');
+        minEl.textContent = String(m).padStart(2, '0');
+        secEl.textContent = String(s).padStart(2, '0');
     }
-
-    updateCounter();
+    update();
+    setInterval(update, 1000);
 }
-
-// ========================================
-// Tooltip System (Optional)
-// ========================================
-function initTooltips() {
-    const tooltipElements = document.querySelectorAll('[data-tooltip]');
-
-    tooltipElements.forEach(el => {
-        const tooltipText = el.getAttribute('data-tooltip');
-
-        el.addEventListener('mouseenter', (e) => {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tooltip';
-            tooltip.textContent = tooltipText;
-            document.body.appendChild(tooltip);
-
-            const rect = el.getBoundingClientRect();
-            tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
-            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
-
-            el._tooltip = tooltip;
-        });
-
-        el.addEventListener('mouseleave', () => {
-            if (el._tooltip) {
-                el._tooltip.remove();
-                el._tooltip = null;
-            }
-        });
-    });
-}
-
-// ========================================
-// Copy to Clipboard (Utility)
-// ========================================
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showNotification('Copied to clipboard!', 'success');
-    }).catch(err => {
-        console.error('Failed to copy:', err);
-        showNotification('Failed to copy', 'error');
-    });
-}
-
-// ========================================
-// Notification System (Utility)
-// ========================================
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-
-    notification.style.cssText = `
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        padding: 16px 24px;
-        background: ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#6366f1'};
-        color: white;
-        border-radius: 8px;
-        font-weight: 500;
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-    `;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// Add notification animations to head
-const notificationStyles = document.createElement('style');
-notificationStyles.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(notificationStyles);
-
-// ========================================
-// Performance: Debounce & Throttle
-// ========================================
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-function throttle(func, limit) {
-    let inThrottle;
-    return function(...args) {
-        if (!inThrottle) {
-            func.apply(this, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
-
-// ========================================
-// Preloader (Optional)
-// ========================================
-function hidePreloader() {
-    const preloader = document.querySelector('.preloader');
-    if (preloader) {
-        preloader.style.opacity = '0';
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
-    }
-}
-
-// Hide preloader when page is loaded
-window.addEventListener('load', hidePreloader);
-
-// ========================================
-// Analytics Event Tracking (Placeholder)
-// ========================================
-function trackEvent(category, action, label) {
-    // Implement your analytics tracking here
-    console.log(`Analytics: ${category} - ${action} - ${label}`);
-}
-
-// Track CTA clicks
-document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
-    btn.addEventListener('click', () => {
-        trackEvent('CTA', 'click', btn.textContent.trim());
-    });
-});
 
 // ========================================
 // Currency Toggle
 // ========================================
 function initCurrencyToggle() {
-    const currencyBtns = document.querySelectorAll('.currency-btn');
-    const priceElements = document.querySelectorAll('.price-amount[data-inr], .free-trial-price[data-inr]');
-    const monthlyEquivElements = document.querySelectorAll('.pricing-monthly-equiv[data-inr]');
+    const btns = document.querySelectorAll('.currency-btn');
+    if (!btns.length) return;
 
-    currencyBtns.forEach(btn => {
+    btns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Update active state
-            currencyBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Update prices
             const currency = btn.dataset.currency;
-            priceElements.forEach(el => {
+            btns.forEach(b => b.classList.toggle('active', b === btn));
+
+            // Update all data-driven price elements
+            document.querySelectorAll('[data-inr][data-usd]').forEach(el => {
                 el.textContent = el.dataset[currency];
             });
-
-            // Update monthly equivalent labels
-            monthlyEquivElements.forEach(el => {
-                el.textContent = el.dataset[currency];
-            });
-
-            trackEvent('Pricing', 'currency_change', currency);
         });
     });
 }
 
 // ========================================
-// Waitlist Form — Saves to Google Sheets
+// Waitlist Form (Google Sheets + localStorage)
 // ========================================
+function initWaitlistForm() {
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzwx5h9fkVDZeB8aGUELW-WfquYqiEHennLYit71xetVNrClqTkGG69VVUi2OQYr0c3/exec';
 
-// ⚠️ IMPORTANT: Replace this URL with your deployed Google Apps Script Web App URL
-const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzwx5h9fkVDZeB8aGUELW-WfquYqiEHennLYit71xetVNrClqTkGG69VVUi2OQYr0c3/exec';
+    // Check if already signed up
+    if (localStorage.getItem('bw_waitlist_joined')) {
+        const successEl = document.getElementById('waitlist-success');
+        if (successEl) successEl.classList.add('active');
+    }
 
-/**
- * Sends waitlist email to Google Sheets via Apps Script Web App.
- * Falls back gracefully — shows success to user even if sheet save fails.
- */
-async function saveEmailToGoogleSheet(email, source = 'waitlist') {
-    try {
-        const response = await fetch(GOOGLE_SHEET_ENDPOINT, {
-            method: 'POST',
-            mode: 'no-cors', // Apps Script doesn't support CORS preflight
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                source: source,
-                timestamp: new Date().toISOString(),
-                page: window.location.href,
-                userAgent: navigator.userAgent
-            })
+    // Main waitlist form
+    const form = document.getElementById('waitlist-form');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('waitlist-email').value.trim();
+            if (!email) return;
+            submitWaitlist(email, 'waitlist-success');
         });
-        console.log('✅ Email saved to Google Sheet:', email);
-        return true;
-    } catch (error) {
-        console.warn('⚠️ Google Sheet save failed (email still stored locally):', error);
-        return false;
+    }
+
+    // Exit popup form
+    const exitForm = document.getElementById('exit-popup-form');
+    if (exitForm) {
+        exitForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('exit-email').value.trim();
+            if (!email) return;
+            submitWaitlist(email, null);
+            closeExitPopup();
+        });
+    }
+
+    function submitWaitlist(email, successId) {
+        // Send to Google Sheets
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('source', 'landing-page');
+        formData.append('timestamp', new Date().toISOString());
+
+        fetch(GOOGLE_SHEET_URL, { method: 'POST', body: formData, mode: 'no-cors' })
+            .catch(() => { /* Silent fail for no-cors */ });
+
+        // Show success
+        localStorage.setItem('bw_waitlist_joined', 'true');
+        localStorage.setItem('bw_waitlist_email', email);
+
+        if (successId) {
+            const el = document.getElementById(successId);
+            if (el) el.classList.add('active');
+        }
+
+        // Increment counter
+        const counter = document.getElementById('waitlist-count');
+        if (counter) {
+            counter.textContent = parseInt(counter.textContent, 10) + 1;
+        }
+        const counterLarge = document.getElementById('waitlist-count-large');
+        if (counterLarge) {
+            counterLarge.textContent = parseInt(counterLarge.textContent, 10) + 1;
+        }
     }
 }
 
-function initWaitlistForm() {
-    const form = document.getElementById('waitlist-form');
-    const exitForm = document.getElementById('exit-popup-form');
-
-    const handleSubmit = (formElement, successElement, source = 'waitlist') => {
-        formElement?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const emailInput = formElement.querySelector('input[type="email"]');
-            const email = emailInput.value.trim();
-            if (!email) return;
-
-            // Disable button to prevent double submit
-            const submitBtn = formElement.querySelector('button[type="submit"]');
-            const originalBtnHTML = submitBtn?.innerHTML;
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="btn-icon">⏳</span> Saving...';
-            }
-
-            // 1. Save to Google Sheet
-            await saveEmailToGoogleSheet(email, source);
-
-            // 2. Also keep in localStorage as backup / for counter
-            const waitlist = JSON.parse(localStorage.getItem('bugwizard_waitlist') || '[]');
-            if (!waitlist.includes(email)) {
-                waitlist.push(email);
-                localStorage.setItem('bugwizard_waitlist', JSON.stringify(waitlist));
-                updateWaitlistCount(waitlist.length);
-            }
-
-            // 3. Show success message
-            if (successElement) {
-                successElement.classList.add('active');
-                formElement.querySelector('.form-group').style.display = 'none';
-                formElement.querySelector('.form-note')?.remove();
-            }
-
-            // Re-enable button (for exit popup which doesn't hide form)
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnHTML;
-            }
-
-            showNotification('You\'re on the waitlist! 🎉', 'success');
-            trackEvent('Waitlist', 'signup', email);
-
-            // Close exit popup if open
-            closeExitPopup();
-        });
-    };
-
-    handleSubmit(form, document.getElementById('waitlist-success'), 'main-waitlist');
-    handleSubmit(exitForm, null, 'exit-popup');
+function updateWaitlistCount() {
+    // Simulate counter growth
+    const counter = document.getElementById('waitlist-count');
+    const counterLarge = document.getElementById('waitlist-count-large');
+    const baseHero = 4859;
+    const baseSection = 7500;
+    const daysFromLaunch = Math.floor((new Date() - new Date('2026-01-01')) / (1000 * 60 * 60 * 24));
+    const growth = Math.max(0, daysFromLaunch * 3);
+    if (counter) counter.textContent = (baseHero + growth).toLocaleString();
+    if (counterLarge) counterLarge.textContent = (baseSection + growth).toLocaleString();
 }
 
-function updateWaitlistCount(additionalCount = 0) {
-    const baseCount = 4859;
+// ========================================
+// Testimonials Carousel
+// ========================================
+function initTestimonialsCarousel() {
+    const track = document.getElementById('testimonialsTrack');
+    const prevBtn = document.getElementById('testimonialPrev');
+    const nextBtn = document.getElementById('testimonialNext');
+    const dotsContainer = document.getElementById('testimonialDots');
+    if (!track || !prevBtn || !nextBtn) return;
 
-    document.querySelectorAll('#waitlist-count, #waitlist-count-large').forEach(el => {
-        if (el) el.textContent = baseCount;
+    const cards = track.querySelectorAll('.t-card');
+    const total = cards.length;
+    let perView = getPerView();
+    let current = 0;
+    const totalSlides = Math.ceil(total / perView);
+
+    // Set card widths
+    function setCardWidths() {
+        perView = getPerView();
+        const gap = 24;
+        const containerWidth = track.parentElement.offsetWidth;
+        const cardWidth = (containerWidth - (perView - 1) * gap) / perView;
+        cards.forEach(card => {
+            card.style.width = cardWidth + 'px';
+            card.style.marginRight = gap + 'px';
+        });
+    }
+
+    function getPerView() {
+        if (window.innerWidth < 768) return 1;
+        if (window.innerWidth < 1024) return 2;
+        return 3;
+    }
+
+    function goTo(index) {
+        const max = Math.ceil(total / perView) - 1;
+        current = Math.max(0, Math.min(index, max));
+        const containerWidth = track.parentElement.offsetWidth;
+        const offset = current * (containerWidth + 24);
+        track.style.transform = `translateX(-${offset}px)`;
+        updateDots();
+    }
+
+    function updateDots() {
+        if (!dotsContainer) return;
+        const max = Math.ceil(total / perView);
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < max; i++) {
+            const dot = document.createElement('div');
+            dot.className = 't-dot' + (i === current ? ' active' : '');
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    setCardWidths();
+    updateDots();
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    window.addEventListener('resize', () => {
+        setCardWidths();
+        goTo(current);
+    });
+
+    // Auto-advance every 6 seconds
+    setInterval(() => {
+        const max = Math.ceil(total / perView) - 1;
+        goTo(current >= max ? 0 : current + 1);
+    }, 6000);
+}
+
+// ========================================
+// FAQ Accordion
+// ========================================
+function initFAQ() {
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            const isOpen = item.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            // Toggle current
+            if (!isOpen) item.classList.add('open');
+        });
     });
 }
 
 // ========================================
 // Exit Intent Popup
 // ========================================
-let exitPopupShown = false;
-
-// Testimonials Auto-Sliding Carousel
-function initTestimonialsCarousel() {
-    const track = document.getElementById('testimonialsTrack');
-    const carousel = document.getElementById('testimonialsCarousel');
-    const prevBtn = document.getElementById('testimonialPrev');
-    const nextBtn = document.getElementById('testimonialNext');
-    const dotsContainer = document.getElementById('testimonialDots');
-    if (!track || !prevBtn || !nextBtn || !dotsContainer || !carousel) return;
-
-    const cards = track.querySelectorAll('.testimonial-card');
-    const totalCards = cards.length;
-    let currentIndex = 0;
-    let autoSlideInterval;
-    let cardsPerView = getCardsPerView();
-
-    function getCardsPerView() {
-        if (window.innerWidth <= 640) return 1;
-        if (window.innerWidth <= 1024) return 2;
-        return 3;
-    }
-
-    function setCardWidths() {
-        const containerWidth = carousel.offsetWidth;
-        const cardMargin = window.innerWidth <= 768 ? 16 : 24; // margin: 0 12px = 24px total, 0 8px = 16px
-        const cardWidth = (containerWidth / cardsPerView) - cardMargin;
-        cards.forEach(function(card) {
-            card.style.width = cardWidth + 'px';
-            card.style.minWidth = cardWidth + 'px';
-        });
-    }
-
-    function buildDots() {
-        dotsContainer.innerHTML = '';
-        var pages = Math.ceil(totalCards / cardsPerView);
-        for (var i = 0; i < pages; i++) {
-            var dot = document.createElement('button');
-            dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
-            dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-            (function(idx) {
-                dot.addEventListener('click', function() { goToSlide(idx); });
-            })(i);
-            dotsContainer.appendChild(dot);
-        }
-    }
-
-    function updateDots() {
-        var dots = dotsContainer.querySelectorAll('.testimonial-dot');
-        var pageIndex = Math.floor(currentIndex / cardsPerView);
-        dots.forEach(function(d, i) {
-            d.classList.toggle('active', i === pageIndex);
-        });
-    }
-
-    function goToSlide(pageIndex) {
-        var maxIndex = totalCards - cardsPerView;
-        currentIndex = Math.min(pageIndex * cardsPerView, maxIndex);
-        if (currentIndex < 0) currentIndex = 0;
-        updatePosition();
-        updateDots();
-        resetAutoSlide();
-    }
-
-    function updatePosition() {
-        if (!cards[0]) return;
-        var card = cards[0];
-        var style = window.getComputedStyle(card);
-        var marginLeft = parseFloat(style.marginLeft) || 0;
-        var marginRight = parseFloat(style.marginRight) || 0;
-        var cardFullWidth = card.offsetWidth + marginLeft + marginRight;
-        track.style.transform = 'translateX(-' + (currentIndex * cardFullWidth) + 'px)';
-    }
-
-    function next() {
-        var maxIndex = totalCards - cardsPerView;
-        if (currentIndex >= maxIndex) {
-            currentIndex = 0;
-        } else {
-            currentIndex++;
-        }
-        updatePosition();
-        updateDots();
-    }
-
-    function prev() {
-        var maxIndex = totalCards - cardsPerView;
-        if (currentIndex <= 0) {
-            currentIndex = maxIndex;
-        } else {
-            currentIndex--;
-        }
-        updatePosition();
-        updateDots();
-    }
-
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(next, 5000);
-    }
-
-    function resetAutoSlide() {
-        clearInterval(autoSlideInterval);
-        startAutoSlide();
-    }
-
-    nextBtn.addEventListener('click', function() { next(); resetAutoSlide(); });
-    prevBtn.addEventListener('click', function() { prev(); resetAutoSlide(); });
-
-    // Pause on hover
-    carousel.addEventListener('mouseenter', function() { clearInterval(autoSlideInterval); });
-    carousel.addEventListener('mouseleave', function() { startAutoSlide(); });
-
-    // Touch/swipe support
-    var touchStartX = 0;
-    track.addEventListener('touchstart', function(e) {
-        touchStartX = e.changedTouches[0].screenX;
-        clearInterval(autoSlideInterval);
-    }, { passive: true });
-    track.addEventListener('touchend', function(e) {
-        var touchEndX = e.changedTouches[0].screenX;
-        var diff = touchStartX - touchEndX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) next(); else prev();
-        }
-        startAutoSlide();
-    }, { passive: true });
-
-    // Handle resize
-    var resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function() {
-            var newPerView = getCardsPerView();
-            cardsPerView = newPerView;
-            currentIndex = 0;
-            setCardWidths();
-            buildDots();
-            updatePosition();
-        }, 150);
-    });
-
-    setCardWidths();
-    buildDots();
-    startAutoSlide();
-}
-
 function initExitPopup() {
-    // Check if already shown in this session
-    if (sessionStorage.getItem('exitPopupShown')) return;
+    let shown = false;
+    if (localStorage.getItem('bw_exit_popup_shown') || localStorage.getItem('bw_waitlist_joined')) return;
 
-    document.addEventListener('mouseleave', (e) => {
-        if (e.clientY < 10 && !exitPopupShown) {
+    document.addEventListener('mouseout', (e) => {
+        if (shown) return;
+        if (e.clientY <= 0) {
             showExitPopup();
+            shown = true;
         }
     });
-
-    // Mobile: show on scroll up near top
-    let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', throttle(() => {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY < 100 && lastScrollY > currentScrollY && !exitPopupShown) {
-            // User scrolling up near top - don't show popup on mobile, too aggressive
-        }
-        lastScrollY = currentScrollY;
-    }, 200));
 }
 
 function showExitPopup() {
     const popup = document.getElementById('exit-popup');
-    if (popup && !exitPopupShown) {
-        popup.classList.add('active');
-        exitPopupShown = true;
-        sessionStorage.setItem('exitPopupShown', 'true');
-        trackEvent('ExitPopup', 'shown', '');
-    }
+    if (popup) popup.classList.add('active');
 }
 
 function closeExitPopup() {
     const popup = document.getElementById('exit-popup');
-    if (popup) {
-        popup.classList.remove('active');
-    }
+    if (popup) popup.classList.remove('active');
+    localStorage.setItem('bw_exit_popup_shown', 'true');
 }
-
-// Close popup on outside click
-document.addEventListener('click', (e) => {
-    const popup = document.getElementById('exit-popup');
-    if (popup && popup.classList.contains('active')) {
-        if (e.target === popup) {
-            closeExitPopup();
-        }
-    }
-});
-
-// Close popup on escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeExitPopup();
-    }
-});
-
-// ========================================
-// Share Waitlist Function
-// ========================================
-function shareWaitlist() {
-    const shareData = {
-        title: 'BugWizard AI - AI-Driven Bug Creation & Retest Automation',
-        text: 'Check out BugWizard AI - it automates bug creation and retesting for Azure DevOps & JIRA. Join the waitlist!',
-        url: window.location.href + '#waitlist'
-    };
-
-    if (navigator.share) {
-        navigator.share(shareData)
-            .then(() => {
-                trackEvent('Share', 'native_share', 'waitlist');
-            })
-            .catch(console.error);
-    } else {
-        // Fallback: copy link to clipboard
-        copyToClipboard(shareData.url);
-        showNotification('Link copied! Share it with your QA friends 🚀', 'success');
-        trackEvent('Share', 'copy_link', 'waitlist');
-    }
-}
-
-// Make shareWaitlist available globally
-window.shareWaitlist = shareWaitlist;
+// Make closeExitPopup globally accessible for onclick
 window.closeExitPopup = closeExitPopup;
 
 // ========================================
-// Initialize New Features
+// Social Proof Notifier
 // ========================================
-document.addEventListener('DOMContentLoaded', () => {
-    initCurrencyToggle();
-    initWaitlistForm();
-    initExitPopup();
-    updateWaitlistCount();
-    initTestimonialsCarousel();
-    
-    // Add more elements to scroll animations
-    const additionalAnimElements = document.querySelectorAll(
-        '.testimonial-card, .faq-item, .demo-step, .founder-content, .device-farm-bottom-cta, .device-farm-preview'
-    );
-    additionalAnimElements.forEach(el => {
-        el.classList.add('animate-on-scroll');
+function initSocialProof() {
+    const countries = [
+        '🇮🇳 India', '🇺🇸 United States', '🇬🇧 United Kingdom', '🇩🇪 Germany',
+        '🇨🇦 Canada', '🇦🇺 Australia', '🇫🇷 France', '🇧🇷 Brazil',
+        '🇯🇵 Japan', '🇳🇱 Netherlands', '🇸🇬 Singapore', '🇦🇪 UAE',
+        '🇰🇷 South Korea', '🇸🇪 Sweden', '🇪🇸 Spain',
+        '🇵🇱 Poland', '🇮🇩 Indonesia', '🇳🇬 Nigeria', '🇿🇦 South Africa',
+        '🇲🇽 Mexico', '🇮🇹 Italy', '🇵🇭 Philippines', '🇻🇳 Vietnam',
+        '🇹🇷 Turkey', '🇹🇭 Thailand', '🇵🇰 Pakistan', '🇧🇩 Bangladesh',
+        '🇨🇴 Colombia', '🇦🇷 Argentina'
+    ];
+    const timeLabels = ['Just now', '1 minute ago', '2 minutes ago', '3 minutes ago', '5 minutes ago', '8 minutes ago', '12 minutes ago'];
+
+    const notifier = document.getElementById('sp-notifier');
+    const msgEl = document.getElementById('sp-notifier-msg');
+    const timeEl = document.getElementById('sp-notifier-time');
+    const closeBtn = document.getElementById('sp-notifier-close');
+    if (!notifier || !msgEl || !timeEl || !closeBtn) return;
+
+    let hideTimeout;
+    let usedIndices = [];
+
+    function getRandomCountry() {
+        if (usedIndices.length >= countries.length) usedIndices = [];
+        let idx;
+        do { idx = Math.floor(Math.random() * countries.length); }
+        while (usedIndices.includes(idx));
+        usedIndices.push(idx);
+        return countries[idx];
+    }
+
+    function showNotification() {
+        const country = getRandomCountry();
+        const time = timeLabels[Math.floor(Math.random() * timeLabels.length)];
+        msgEl.innerHTML = 'Someone from <strong>' + country + '</strong> just joined the waitlist';
+        timeEl.textContent = time;
+        notifier.classList.add('sp-show');
+
+        // Increment counter
+        const counterEl = document.getElementById('waitlist-count');
+        if (counterEl) {
+            counterEl.textContent = parseInt(counterEl.textContent.replace(/,/g, ''), 10) + 1;
+        }
+
+        hideTimeout = setTimeout(() => notifier.classList.remove('sp-show'), 6000);
+        scheduleNext();
+    }
+
+    function scheduleNext() {
+        const delay = 180000 + Math.floor(Math.random() * 120000);
+        setTimeout(showNotification, delay);
+    }
+
+    closeBtn.addEventListener('click', () => {
+        clearTimeout(hideTimeout);
+        notifier.classList.remove('sp-show');
     });
-    
-    // Re-observe new elements
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+
+    // First notification after 8-15 seconds
+    setTimeout(showNotification, 8000 + Math.floor(Math.random() * 7000));
+}
+
+// ========================================
+// Ask AI Chatbot
+// ========================================
+function initAskAI() {
+    const fab = document.getElementById('askAIBtn');
+    const panel = document.getElementById('askAIChatPanel');
+    const closeBtn = document.getElementById('askAIChatClose');
+    const clearBtn = document.getElementById('askAIChatClear');
+    const input = document.getElementById('askAIChatInput');
+    const sendBtn = document.getElementById('askAIChatSend');
+    const messages = document.getElementById('askAIChatMessages');
+    const suggestions = document.getElementById('askAIChatSuggestions');
+    if (!fab || !panel) return;
+
+    fab.addEventListener('click', () => {
+        panel.classList.toggle('hidden');
+        if (!panel.classList.contains('hidden') && input) input.focus();
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', () => panel.classList.add('hidden'));
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if (messages) {
+                messages.innerHTML = `<div class="ask-ai-msg bot"><div class="ask-ai-msg-avatar">🧙‍♂️</div><div class="ask-ai-msg-bubble">Hi! I'm the BugWizard Guide. Ask me anything about BugWizard — features, pricing, device farm, setup, and more!</div></div>`;
             }
         });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        observer.observe(el);
-    });
-});
+    }
+
+    function addMessage(text, isUser) {
+        if (!messages) return;
+        const div = document.createElement('div');
+        div.className = 'ask-ai-msg ' + (isUser ? 'user' : 'bot');
+        div.innerHTML = isUser
+            ? `<div class="ask-ai-msg-bubble">${escapeHTML(text)}</div>`
+            : `<div class="ask-ai-msg-avatar">🧙‍♂️</div><div class="ask-ai-msg-bubble">${text}</div>`;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function getAnswer(q) {
+        const ql = q.toLowerCase();
+        if (ql.includes('what is bugwizard') || ql.includes('about bugwizard')) {
+            return 'BugWizard AI is an AI-powered QA Operating System for Azure DevOps & JIRA. It automates bug creation, retesting, provides a cloud device farm (Ozzy Device Farm), AI assistant (Ozzy AI), API testing, duplicate detection, and 16+ QA tools — all in one platform.';
+        }
+        if (ql.includes('feature') || ql.includes('what can')) {
+            return 'BugWizard includes: 🐛 AI Bug Creator, 🔄 AI Retest Automator, 📱 Ozzy Device Farm (50+ cloud devices), 🤖 Ozzy AI Assistant (10+ AI providers), 🔌 API Flow Tester, 🎬 Video Compressor, 🔍 Duplicate Detector, 🧠 Test Case Optimizer, 📝 Test Case Generator, 🧩 Plugin Store, 🤖 Agentron Store, 📊 Activity Dashboard, 💻 Built-in Terminal, and more!';
+        }
+        if (ql.includes('device farm') || ql.includes('ozzy device')) {
+            return 'Ozzy Device Farm is a cloud device lab built into BugWizard. Test on 50+ real Android & iOS devices — Pixel 9, iPhone 16, Galaxy S24, iPad Pro and more. Features include screenshot capture, screen rotation, DevTools (Console, Network, ADB), APK/IPA upload, session timer, and evidence drawer. No physical devices needed!';
+        }
+        if (ql.includes('pric') || ql.includes('cost') || ql.includes('plan')) {
+            return 'Pricing plans: 🎁 Free Trial (7 days, full access, ₹0/$0), ⚡ Monthly (₹849/$9.99/mo, 1 license), 💎 Yearly (₹8,499/$99.99/yr, 10 licenses, save 17%), 👑 Unlimited (₹1,20,000/$1,299.99 one-time, unlimited licenses), 🏢 Enterprise (custom). All plans include full feature access.';
+        }
+        if (ql.includes('ozzy ai') || ql.includes('ai assistant') || ql.includes('ai provider')) {
+            return 'Ozzy AI is your QA co-pilot with 10+ AI providers: Groq (Llama 3.3), OpenRouter (Mistral 7B), Gemini 2.0, OpenAI GPT-4o, Claude 3.5, Grok, Azure OpenAI, DeepSeek, Qwen, and GLM-4. It generates bug reports, suggests edge cases, answers QA questions, and supports voice-to-text input. All API keys are stored locally.';
+        }
+        if (ql.includes('security') || ql.includes('safe') || ql.includes('pat') || ql.includes('token')) {
+            return 'Your data is 100% secure. BugWizard stores everything in your browser\'s localStorage — PAT tokens, API keys, and bug data never leave your machine. API calls go directly to Azure DevOps/JIRA. No backend, no cloud storage, SHA-256 hashing, GDPR compliant.';
+        }
+        if (ql.includes('api') || ql.includes('postman')) {
+            return 'The API Flow Tester replaces Postman for quick tests. It supports all HTTP methods (GET, POST, PUT, PATCH, DELETE), custom headers, auth tokens, JSON/Form body builder, syntax-highlighted responses, latency tracking, collections, and request history — all built into BugWizard.';
+        }
+        if (ql.includes('integrat') || ql.includes('azure') || ql.includes('jira')) {
+            return 'BugWizard deeply integrates with both Azure DevOps and Atlassian JIRA via REST APIs. It can create work items, submit comments, update bug states, upload attachments, fetch duplicates, and build dashboards. No plugins or extensions needed — switch platforms anytime.';
+        }
+        if (ql.includes('launch') || ql.includes('when') || ql.includes('release')) {
+            return 'BugWizard AI is launching on May 1, 2026! Join the waitlist to get early access. We\'re currently in the final polishing phase.';
+        }
+        return 'Great question! BugWizard AI is a complete QA OS with 16+ tools including AI bug creation, retesting, Ozzy Device Farm (50+ cloud devices), Ozzy AI (10+ providers), API testing, and more. Check out our <a href="#features" style="color:var(--gold)">features section</a> for details, or ask me about pricing, security, or specific tools!';
+    }
+
+    function handleSend() {
+        const text = input.value.trim();
+        if (!text) return;
+        addMessage(text, true);
+        input.value = '';
+        setTimeout(() => addMessage(getAnswer(text), false), 400 + Math.random() * 300);
+    }
+
+    if (sendBtn) sendBtn.addEventListener('click', handleSend);
+    if (input) input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
+
+    if (suggestions) {
+        suggestions.querySelectorAll('.ask-ai-suggestion').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const q = btn.dataset.q;
+                addMessage(q, true);
+                setTimeout(() => addMessage(getAnswer(q), false), 400 + Math.random() * 300);
+            });
+        });
+    }
+}
+
+// ========================================
+// Share Waitlist
+// ========================================
+function shareWaitlist() {
+    const url = window.location.href.split('#')[0] + '#waitlist';
+    const text = 'Check out BugWizard AI — an AI-powered QA OS for Azure DevOps & JIRA with 50+ cloud devices, 10+ AI providers, and 16+ QA tools!';
+
+    if (navigator.share) {
+        navigator.share({ title: 'BugWizard AI', text: text, url: url }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Waitlist link copied to clipboard!');
+        }).catch(() => {
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text + ' ' + url), '_blank');
+        });
+    }
+}
+window.shareWaitlist = shareWaitlist;
+
+// ========================================
+// Offline Banner
+// ========================================
+function initOfflineBanner() {
+    const banner = document.getElementById('offline-banner');
+    if (!banner) return;
+
+    function update() {
+        banner.style.display = navigator.onLine ? 'none' : 'block';
+    }
+    window.addEventListener('online', update);
+    window.addEventListener('offline', update);
+    update();
+}
