@@ -56,7 +56,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:var(--max-w);margin:0 auto;padding:0 28px}
 .nav-brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.25rem;font-weight:600;color:var(--text-0)}
 .nav-brand img{width:36px;height:36px;min-width:36px;max-width:36px;max-height:36px;object-fit:contain;display:inline-block !important;border-radius:50%}
-.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links{display:flex;align-items:center;gap:24px}
 .nav-links a{font-size:.86rem;font-weight:500;color:var(--text-2);transition:color .2s}
 .nav-links a:hover{color:var(--text-0)}
 .nav-cta{display:flex;align-items:center;gap:12px}
@@ -410,6 +410,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .footer-links{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
 .footer-links a{font-size:.82rem;color:var(--text-2);transition:color .2s}
 .footer-links a:hover{color:var(--text-0)}
+.footer-social{display:flex;gap:16px;align-items:center}
+.social-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--border-light);color:var(--text-2);transition:all .25s var(--ease)}
+.social-icon:hover{color:var(--gold);border-color:var(--gold);background:rgba(245,166,35,.08);transform:translateY(-2px)}
 .footer-legal{display:flex;gap:16px;font-size:.78rem;color:var(--text-3)}
 .footer-copy{font-size:.78rem;color:var(--text-3);text-align:center}
 .footer-copy a{color:var(--violet)}
