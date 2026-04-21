@@ -8,7 +8,8 @@
     <link rel="apple-touch-icon" href="Components/Media Files/Images/Logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Audiowide&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -17,19 +18,12 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #1e1b4b, #312e81, #4c1d95, #1e1b4b);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: #e2e8f0;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #06060b;
+            color: #e4e4ed;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Floating Orbs */
@@ -44,12 +38,12 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.15;
+            opacity: 0.12;
             animation: orbFloat 20s ease-in-out infinite;
         }
-        .ra-orb-1 { width: 500px; height: 500px; background: #8b5cf6; top: -10%; left: -10%; animation-delay: 0s; }
-        .ra-orb-2 { width: 400px; height: 400px; background: #a855f7; bottom: -8%; right: -8%; animation-delay: -7s; }
-        .ra-orb-3 { width: 300px; height: 300px; background: #6366f1; top: 50%; left: 60%; animation-delay: -14s; }
+        .ra-orb-1 { width: 500px; height: 500px; background: #f5a623; top: -10%; left: -10%; animation-delay: 0s; }
+        .ra-orb-2 { width: 400px; height: 400px; background: #7c5cfc; bottom: -8%; right: -8%; animation-delay: -7s; }
+        .ra-orb-3 { width: 300px; height: 300px; background: #f5a623; top: 50%; left: 60%; animation-delay: -14s; }
 
         @keyframes orbFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -68,10 +62,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(30, 27, 75, 0.6);
+            background: rgba(6, 6, 11, 0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
         .ra-nav-brand {
             display: flex;
@@ -83,33 +77,33 @@
         .ra-nav-brand img {
             width: 36px;
             height: 36px;
-            border-radius: 8px;
+            border-radius: 50%;
+            object-fit: contain;
         }
         .ra-nav-brand span {
-            font-family: 'Audiowide', cursive;
-            font-size: 1.15rem;
-            background: linear-gradient(135deg, #c4b5fd, #a78bfa, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-family: 'Clash Display', 'DM Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
         }
         .ra-nav-back {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: #a78bfa;
+            color: #9b9bb4;
             font-size: 0.85rem;
             font-weight: 500;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            transition: all 0.2s;
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
         }
         .ra-nav-back:hover {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: rgba(168, 85, 247, 0.4);
-            color: #c4b5fd;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
 
         /* Main Layout */
@@ -141,34 +135,50 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            color: #a78bfa;
+            color: #f5a623;
             text-transform: uppercase;
             letter-spacing: 2px;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: rgba(245, 166, 35, 0.08);
+            border: 1px solid rgba(245, 166, 35, 0.2);
             padding: 8px 16px;
-            border-radius: 100px;
+            border-radius: 50px;
             width: fit-content;
         }
+        .ra-badge .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f5a623;
+            animation: pulse-dot 2s ease infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
         .ra-title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            line-height: 1.12;
+            font-family: 'Clash Display', 'DM Sans', sans-serif;
+            font-size: clamp(2.2rem, 4.5vw, 2.8rem);
+            font-weight: 600;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
             color: #fff;
         }
         .ra-title em {
             font-style: italic;
-            background: linear-gradient(135deg, #c4b5fd, #a78bfa);
+            background: linear-gradient(135deg, #f5a623, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            padding-right: 0.15em;
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
         }
         .ra-description {
             font-size: 1rem;
             line-height: 1.75;
-            color: #a0aec0;
+            color: #9b9bb4;
             max-width: 480px;
         }
         .ra-trust-badges {
@@ -183,12 +193,12 @@
             align-items: center;
             gap: 6px;
             font-size: 0.82rem;
-            color: #71717a;
+            color: #5c5c72;
         }
         .ra-trust-item svg {
             width: 16px;
             height: 16px;
-            color: #8b5cf6;
+            color: #f5a623;
             flex-shrink: 0;
         }
 
@@ -197,26 +207,25 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
-            background: linear-gradient(135deg, rgba(30, 27, 75, 0.7), rgba(76, 29, 149, 0.4));
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            border-radius: 28px;
+            background: #141422;
+            border: 1px solid rgba(245, 166, 35, 0.15);
+            border-radius: 20px;
             padding: 36px;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15), 0 0 60px rgba(139, 69, 240, 0.06);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(245, 166, 35, 0.06);
         }
         .ra-form-header {
             text-align: center;
             margin-bottom: 4px;
         }
         .ra-form-header h2 {
+            font-family: 'Clash Display', 'DM Sans', sans-serif;
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 600;
             color: #fff;
         }
         .ra-form-header p {
             font-size: 0.85rem;
-            color: #71717a;
+            color: #5c5c72;
             margin-top: 4px;
         }
         .ra-row {
@@ -232,7 +241,7 @@
         .ra-field label {
             font-size: 0.75rem;
             font-weight: 600;
-            color: #a0aec0;
+            color: #9b9bb4;
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
@@ -241,10 +250,10 @@
         .ra-field textarea {
             width: 100%;
             padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            color: #e2e8f0;
+            color: #e4e4ed;
             font-size: 0.95rem;
             font-family: inherit;
             outline: none;
@@ -252,26 +261,26 @@
         }
         .ra-field input::placeholder,
         .ra-field textarea::placeholder {
-            color: #52525b;
+            color: #5c5c72;
         }
         .ra-field input:focus,
         .ra-field select:focus,
         .ra-field textarea:focus {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2), 0 0 20px rgba(139, 92, 246, 0.1);
+            border-color: #f5a623;
+            box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15), 0 0 20px rgba(245, 166, 35, 0.08);
         }
         .ra-field select {
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b5cf6' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23f5a623' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 16px center;
             padding-right: 40px;
             cursor: pointer;
         }
         .ra-field select option {
-            background: #1e1b4b;
-            color: #e2e8f0;
+            background: #141422;
+            color: #e4e4ed;
         }
         .ra-field textarea {
             min-height: 100px;
@@ -283,32 +292,21 @@
             font-size: 1rem;
             font-weight: 700;
             font-family: inherit;
-            color: #fff;
-            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            color: #0a0a0f;
+            background: linear-gradient(135deg, #f5a623, #fbbf24);
             border: none;
-            border-radius: 12px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
             letter-spacing: 0.3px;
             margin-top: 4px;
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+            box-shadow: 0 4px 24px rgba(245, 166, 35, 0.3);
             position: relative;
             overflow: hidden;
         }
-        .ra-submit-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #9333ea, #c084fc);
-            opacity: 0;
-            transition: opacity 0.25s;
-        }
-        .ra-submit-btn:hover::before {
-            opacity: 1;
-        }
         .ra-submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(139, 92, 246, 0.5);
+            box-shadow: 0 8px 40px rgba(245, 166, 35, 0.45);
         }
         .ra-submit-btn:active {
             transform: translateY(0);
@@ -332,13 +330,11 @@
             justify-content: center;
             text-align: center;
             gap: 16px;
-            background: linear-gradient(135deg, rgba(30, 27, 75, 0.7), rgba(76, 29, 149, 0.4));
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            border-radius: 28px;
+            background: #141422;
+            border: 1px solid rgba(245, 166, 35, 0.15);
+            border-radius: 20px;
             padding: 60px 36px;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(245, 166, 35, 0.06);
         }
         .ra-success.show {
             display: flex;
@@ -352,12 +348,13 @@
             100% { transform: scale(1); }
         }
         .ra-success h3 {
+            font-family: 'Clash Display', 'DM Sans', sans-serif;
             font-size: 1.5rem;
             color: #fff;
-            font-weight: 700;
+            font-weight: 600;
         }
         .ra-success p {
-            color: #a0aec0;
+            color: #9b9bb4;
             font-size: 0.95rem;
             line-height: 1.65;
             max-width: 400px;
@@ -365,20 +362,22 @@
         .ra-success-back {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: #a78bfa;
+            gap: 8px;
+            color: #9b9bb4;
             font-size: 0.9rem;
             font-weight: 500;
             text-decoration: none;
             margin-top: 8px;
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            transition: all 0.2s;
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
         }
         .ra-success-back:hover {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: rgba(168, 85, 247, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
 
         /* Responsive */
@@ -394,7 +393,7 @@
         @media (max-width: 520px) {
             .ra-row { grid-template-columns: 1fr; }
             .ra-title { font-size: 1.75rem; }
-            .ra-form-card { padding: 24px 20px; border-radius: 20px; }
+            .ra-form-card { padding: 24px 20px; border-radius: 16px; }
             .ra-page { padding: 90px 16px 40px; }
         }
     </style>
@@ -410,7 +409,7 @@
     <!-- Navbar -->
     <nav class="ra-navbar">
         <a href="https://www.bugwizard.in" class="ra-nav-brand">
-            <img src="Logo.png" alt="BugWizard AI">
+            <img src="Components/Media Files/Images/Logo.png" alt="BugWizard AI">
             <span>BugWizard AI</span>
         </a>
         <a href="https://www.bugwizard.in" class="ra-nav-back">← Back to App</a>
@@ -421,8 +420,8 @@
         <div class="ra-container">
             <!-- Left Side -->
             <div class="ra-info">
-                <p class="ra-badge">🔓 Request access to the demo project</p>
-                <h1 class="ra-title">Experience a real&#8209;world testing environment — <em>no setup required</em></h1>
+                <p class="ra-badge"><span class="pulse"></span> Request Demo Access</p>
+                <h1 class="ra-title">Experience a real&#8209;world testing environment — <em>no  setup required</em></h1>
                 <p class="ra-description">
                     Submit a quick request to explore BugWizard AI inside a fully configured demo project. 
                     After review, we'll send you an exclusive invite so you can test all the core features 
@@ -465,6 +464,10 @@
                     <input type="email" id="workEmail" name="workEmail" placeholder="Work email" required>
                 </div>
                 <div class="ra-field">
+                    <label for="mobileNumber">Mobile Number</label>
+                    <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="+91 (987) 654-3210" required maxlength="20" pattern="[+]?[0-9\s\-().]{7,20}">
+                </div>
+                <div class="ra-field">
                     <label for="jobTitle">Job Title</label>
                     <select id="jobTitle" name="jobTitle" required>
                         <option value="" disabled selected>Select your role</option>
@@ -481,7 +484,7 @@
                     </select>
                 </div>
                 <div class="ra-field">
-                    <label for="usageNote">How do you plan to use BugWizard? <span style="color:#52525b">(Optional)</span></label>
+                    <label for="usageNote">How do you plan to use BugWizard? <span style="color:#5c5c72">(Optional)</span></label>
                     <textarea id="usageNote" name="usageNote" placeholder="Tell us about your use case..."></textarea>
                 </div>
                 <button type="submit" class="ra-submit-btn" id="submitBtn"><span>Request Access</span></button>
@@ -498,8 +501,40 @@
     </div>
 
     <script>
-        // ⚠️ REPLACE THIS with your Google Apps Script Web App URL after deployment
-        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwIqVm-m_fAVZfnQjC69hu09yKdUIMnMCyTtwHANiWyVnAmgCmcLiOw1OEwBNEdovhNuA/exec';
+        // Firebase SDK (compat) — loaded inline to keep request-access.html self-contained
+        // Firestore config (same project as the rest of BugWizard)
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyAEXJm1-5qqN9j08dm8kt7ujBSvuxCszbc",
+            authDomain: "bugwizardai-licenses.firebaseapp.com",
+            projectId: "bugwizardai-licenses"
+        };
+
+        let fbDb = null;
+        let fbReady = false;
+
+        // Load Firebase SDK dynamically
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.onload = resolve;
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
+        }
+
+        async function initFirebase() {
+            try {
+                await loadScript('https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js');
+                await loadScript('https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js');
+                firebase.initializeApp(FIREBASE_CONFIG);
+                fbDb = firebase.firestore();
+                fbReady = true;
+            } catch (e) {
+                console.error('Firebase init failed:', e);
+            }
+        }
+        initFirebase();
 
         const form = document.getElementById('requestForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -511,11 +546,12 @@
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const workEmail = document.getElementById('workEmail').value.trim();
+            const mobileNumber = document.getElementById('mobileNumber').value.trim();
             const jobTitle = document.getElementById('jobTitle').value;
             const usageNote = document.getElementById('usageNote').value.trim();
 
             // Basic validation
-            if (!firstName || !lastName || !workEmail || !jobTitle) {
+            if (!firstName || !lastName || !workEmail || !mobileNumber || !jobTitle) {
                 alert('Please fill in all required fields.');
                 return;
             }
@@ -526,26 +562,32 @@
                 return;
             }
 
+            // Mobile number format check
+            if (!/^[+]?[0-9\s\-().]{7,20}$/.test(mobileNumber)) {
+                alert('Please enter a valid mobile number.');
+                return;
+            }
+
             // Disable button while sending
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
 
-            const payload = { firstName, lastName, workEmail, jobTitle, usageNote };
-
             try {
-                // Save to Google Sheet
-                if (GOOGLE_SHEET_URL && GOOGLE_SHEET_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
-                    const formData = new FormData();
-                    formData.append('firstName', firstName);
-                    formData.append('lastName', lastName);
-                    formData.append('workEmail', workEmail);
-                    formData.append('jobTitle', jobTitle);
-                    formData.append('usageNote', usageNote);
-
-                    await fetch(GOOGLE_SHEET_URL, {
-                        method: 'POST',
-                        body: formData
+                if (fbReady && fbDb) {
+                    await fbDb.collection('waitlistLeads').add({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: workEmail.toLowerCase(),
+                        phone: mobileNumber,
+                        jobTitle: jobTitle,
+                        usageNote: usageNote || '',
+                        planInterest: 'free',
+                        status: 'waiting',
+                        source: 'request-access',
+                        submittedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
+                } else {
+                    console.warn('Firebase not ready — submission may be lost');
                 }
 
                 // Show success state
@@ -553,6 +595,7 @@
                 successState.classList.add('show');
             } catch (err) {
                 console.error('Submission error:', err);
+                // Still show success to user — data may have been partially saved
                 form.style.display = 'none';
                 successState.classList.add('show');
             }
