@@ -221,7 +221,7 @@ function updateWaitlistCount() {
     // Simulate counter growth
     const counter = document.getElementById('waitlist-count');
     const counterLarge = document.getElementById('waitlist-count-large');
-    const baseHero = 4859;
+    const baseHero = 6214;
     const baseSection = 7500;
     const daysFromLaunch = Math.floor((new Date() - new Date('2026-01-01')) / (1000 * 60 * 60 * 24));
     const growth = Math.max(0, daysFromLaunch * 3);
