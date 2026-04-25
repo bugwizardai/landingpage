@@ -241,6 +241,7 @@ function initTestimonialsCarousel() {
 
     const cards = track.querySelectorAll('.t-card');
     const total = cards.length;
+    const gap = 24;
     let perView = getPerView();
     let current = 0;
     const totalSlides = Math.ceil(total / perView);
@@ -248,12 +249,12 @@ function initTestimonialsCarousel() {
     // Set card widths
     function setCardWidths() {
         perView = getPerView();
-        const gap = 24;
-        const containerWidth = track.parentElement.offsetWidth;
+        const containerWidth = track.parentElement.clientWidth;
         const cardWidth = (containerWidth - (perView - 1) * gap) / perView;
-        cards.forEach(card => {
+        cards.forEach((card, index) => {
             card.style.width = cardWidth + 'px';
-            card.style.marginRight = gap + 'px';
+            card.style.margin = '0';
+            card.style.marginRight = index === cards.length - 1 ? '0px' : gap + 'px';
         });
     }
 
@@ -266,8 +267,8 @@ function initTestimonialsCarousel() {
     function goTo(index) {
         const max = Math.ceil(total / perView) - 1;
         current = Math.max(0, Math.min(index, max));
-        const containerWidth = track.parentElement.offsetWidth;
-        const offset = current * (containerWidth + 24);
+        const containerWidth = track.parentElement.clientWidth;
+        const offset = current * (containerWidth + gap);
         track.style.transform = `translateX(-${offset}px)`;
         updateDots();
     }
