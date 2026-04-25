@@ -19,7 +19,9 @@
         .buy-wrap{max-width:780px;margin:0 auto}
         .buy-header{text-align:center;margin-bottom:32px}
         .buy-header h1{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--text-0);margin-bottom:10px}
-        .buy-header p{color:var(--text-2);font-size:1.05rem}
+        .buy-header p{color:var(--text-2);font-size:1.05rem;max-width:540px;margin:0 auto}
+        .buy-navbar .nav-cta{display:flex}
+        .buy-navbar .nav-cta .btn{padding:10px 20px;font-size:.85rem}
         .buy-card{background:linear-gradient(180deg,rgba(20,20,34,.95),rgba(12,12,20,.95));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:36px;backdrop-filter:blur(20px);box-shadow:0 30px 70px rgba(0,0,0,.5)}
         .plan-summary{display:flex;align-items:center;gap:14px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:14px 18px;margin-bottom:28px}
         .plan-summary .icon{font-size:1.8rem}
@@ -76,15 +78,47 @@
         .form-error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:12px 14px;border-radius:10px;font-size:.88rem;margin-bottom:16px;display:none}
         .form-error.show{display:block}
 
-        @media (max-width:600px){
-            .buy-card{padding:24px 18px}
+        @media (max-width:900px){
+            .buy-page{padding:94px 24px 56px}
+            .buy-card{padding:30px}
+        }
+
+        @media (max-width:640px){
+            .buy-page{padding:88px 16px 40px}
+            .buy-header{margin-bottom:24px}
+            .buy-header p{font-size:.95rem}
+            .buy-card{padding:24px 18px;border-radius:16px}
             .form-row.two-col{grid-template-columns:1fr}
+            .plan-summary{flex-wrap:wrap;align-items:flex-start;padding:14px}
+            .plan-summary .price{width:100%;margin-top:4px}
+            .seat-control{width:100%}
+            .seat-input{flex:1;width:auto}
+            .total-box{flex-direction:column;align-items:flex-start;gap:8px}
+            .total-box .amount{font-size:1.35rem}
+            .total-box .amount small{text-align:left}
+            .terms-row{padding:12px}
+            .back-link{margin-bottom:18px}
+            .success-state .btn{width:100%}
+        }
+
+        @media (max-width:520px){
+            .buy-navbar .nav-inner{padding:0 16px;flex-wrap:wrap;gap:12px;justify-content:center}
+            .buy-navbar .nav-cta{width:100%;justify-content:center}
+        }
+
+        @media (max-width:420px){
+            .buy-page{padding-top:80px}
+            .buy-navbar .nav-brand span{font-size:1.02rem}
+            .buy-navbar .nav-cta .btn{padding:9px 14px;font-size:.78rem}
+            .buy-header h1{font-size:1.65rem}
+            .plan-summary .icon{font-size:1.55rem}
+            .submit-btn{padding:15px;font-size:1rem}
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar" id="navbar">
+<nav class="navbar buy-navbar" id="navbar">
     <div class="nav-inner">
         <a href="index.html" class="nav-brand">
             <img src="Logo.png" alt="BugWizard AI">
