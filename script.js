@@ -98,10 +98,10 @@ function initSmoothScroll() {
 }
 
 // ========================================
-// Countdown Timer — April 30, 2026
+// Countdown Timer — May 1, 2026 12:00 PM
 // ========================================
 function initCountdown() {
-    const launchDate = new Date('2026-04-30T00:00:00');
+    const launchDate = new Date('2026-05-01T12:00:00');
     const daysEl = document.getElementById('lc-days');
     const hoursEl = document.getElementById('lc-hours');
     const minEl = document.getElementById('lc-minutes');
@@ -486,7 +486,7 @@ function initAskAI() {
             return 'BugWizard deeply integrates with both Azure DevOps and Atlassian JIRA via REST APIs. It can create work items, submit comments, update bug states, upload attachments, fetch duplicates, and build dashboards. No plugins or extensions needed — switch platforms anytime.';
         }
         if (ql.includes('launch') || ql.includes('when') || ql.includes('release')) {
-            return 'BugWizard AI is launching on May 1, 2026! Join the waitlist to get early access. We\'re currently in the final polishing phase.';
+            return 'BugWizard AI is launching on May 1, 2026 at 12:00 PM! Join the waitlist to get early access. We\'re currently in the final polishing phase.';
         }
         return 'Great question! BugWizard AI is a complete QA OS with 16+ tools including AI bug creation, retesting, Ozzy Device Farm (50+ cloud devices), Ozzy AI (10+ providers), API testing, and more. Check out our <a href="#features" style="color:var(--gold)">features section</a> for details, or ask me about pricing, security, or specific tools!';
     }
